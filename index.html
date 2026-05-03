@@ -65,14 +65,11 @@
     }
     .hero-icon {
       width: 96px; height: 96px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
       border-radius: 22px;
-      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 28px;
-      box-shadow: 0 0 40px rgba(34,197,94,0.15);
+      box-shadow: 0 0 40px rgba(34,197,94,0.25);
+      overflow: hidden;
     }
-    .hero-icon svg { width: 54px; height: 54px; }
     .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
     .hero h1 { font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--fg); line-height: 1.1; margin-bottom: 20px; }
     .hero h1 span { color: var(--green); }
@@ -157,12 +154,7 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-icon">
-      <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 44 L16 18 L24 30 L32 14 L50 44 Z" fill="#22c55e" opacity="0.2"/>
-        <path d="M4 44 L16 18 L24 30 L32 14 L50 44 Z" stroke="#22c55e" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="40" cy="16" r="10" fill="#0a0a0a" stroke="#22c55e" stroke-width="1.5"/>
-        <path d="M36.5 16 L39 19 L44 13" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img src="icon.png" alt="Pass Checker app icon" style="width:96px;height:96px;border-radius:22px;display:block;" />
     </div>
     <div class="hero-eyebrow">Washington State</div>
     <h1>Know before<br>you <span>go.</span></h1>
