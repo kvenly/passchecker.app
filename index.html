@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pass Checker — Washington State Road Conditions</title>
+  <meta name="description" content="Real-time road conditions, weather, and DOT camera feeds for Washington State mountain passes. Know before you go." />
+  <meta property="og:title" content="Pass Checker — Washington State Road Conditions" />
+  <meta property="og:description" content="Real-time road conditions, weather, and DOT camera feeds for Washington State mountain passes." />
+  <meta property="og:type" content="website" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --bg2:      #111111;
+      --bg3:      #161616;
+      --fg:       #f1f3f7;
+      --dim:      #a1a6b0;
+      --dimmer:   #4b5563;
+      --green:    #22c55e;
+      --green2:   #16a34a;
+      --border:   #1f2937;
+      --mono:     'Courier New', Courier, monospace;
+      --sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 960px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo { font-family: var(--mono); font-size: 13px; font-weight: bold; color: var(--green); letter-spacing: 0.04em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-right a { font-size: 14px; color: var(--dim); text-decoration: none; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--fg); }
+    .nav-dl { background: var(--green2); color: #fff !important; padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 13px !important; transition: background 0.2s !important; }
+    .nav-dl:hover { background: #15803d !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(34,197,94,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-icon {
+      width: 96px; height: 96px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      box-shadow: 0 0 40px rgba(34,197,94,0.15);
+    }
+    .hero-icon svg { width: 54px; height: 54px; }
+    .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--fg); line-height: 1.1; margin-bottom: 20px; }
+    .hero h1 span { color: var(--green); }
+    .hero p { font-size: 1.125rem; color: var(--dim); max-width: 440px; margin: 0 auto 40px; line-height: 1.75; }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--fg); color: var(--bg);
+      padding: 14px 28px; border-radius: 14px;
+      font-weight: 700; font-size: 15px; text-decoration: none;
+      transition: transform 0.15s, background 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); background: #e5e7eb; }
+    .btn-primary svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--dim);
+      border: 1px solid var(--border);
+      padding: 14px 24px; border-radius: 14px;
+      font-size: 15px; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--dimmer); color: var(--fg); }
+    .hero-sub { margin-top: 32px; font-family: var(--mono); font-size: 12px; color: var(--dimmer); letter-spacing: 0.06em; }
+    .hero-sub span { color: var(--green); }
+
+    /* ── FEATURES ── */
+    #features { padding: 96px 24px; background: var(--bg); }
+    .features-inner { max-width: 960px; margin: 0 auto; }
+    .section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+    .features-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 48px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .feature-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px; transition: border-color 0.2s; }
+    .feature-card:hover { border-color: var(--green2); }
+    .feature-icon { width: 40px; height: 40px; background: rgba(34,197,94,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 18px; }
+    .feature-card h3 { font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--dim); line-height: 1.7; }
+
+    /* ── PASSES ── */
+    #passes { padding: 96px 24px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .passes-inner { max-width: 960px; margin: 0 auto; }
+    .passes-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 12px; }
+    .passes-sub { font-size: 15px; color: var(--dim); margin-bottom: 40px; }
+    .pass-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+    .pass-pill { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+    .pass-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .pass-dot.green  { background: #22c55e; }
+    .pass-dot.yellow { background: #eab308; }
+    .pass-dot.orange { background: #f97316; }
+    .pass-name { font-size: 13px; color: var(--dim); font-family: var(--mono); }
+
+    /* ── DOWNLOAD CTA ── */
+    #download { padding: 96px 24px; text-align: center; background: var(--bg); position: relative; overflow: hidden; }
+    #download::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(34,197,94,0.06) 0%, transparent 70%); pointer-events: none; }
+    .cta-inner { max-width: 480px; margin: 0 auto; position: relative; }
+    #download h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 16px; }
+    #download p { font-size: 1.0625rem; color: var(--dim); margin-bottom: 36px; line-height: 1.75; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 13px; color: var(--dimmer); }
+    .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .footer-logo { font-family: var(--mono); font-size: 13px; color: var(--green); font-weight: bold; letter-spacing: 0.04em; margin-bottom: 4px; }
+    footer a { color: var(--dimmer); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--green); }
+    .footer-links { display: flex; gap: 20px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">Pass Checker//</a>
+      <div class="nav-right">
+        <a href="#features">Features</a>
+        <a href="#passes">Passes</a>
+        <a href="#download" class="nav-dl">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon">
+      <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 44 L16 18 L24 30 L32 14 L50 44 Z" fill="#22c55e" opacity="0.2"/>
+        <path d="M4 44 L16 18 L24 30 L32 14 L50 44 Z" stroke="#22c55e" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="40" cy="16" r="10" fill="#0a0a0a" stroke="#22c55e" stroke-width="1.5"/>
+        <path d="M36.5 16 L39 19 L44 13" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="hero-eyebrow">Washington State</div>
+    <h1>Know before<br>you <span>go.</span></h1>
+    <p>Real-time road conditions, weather alerts, and live DOT camera feeds for Washington State mountain passes.</p>
+    <div class="hero-buttons">
+      <a class="btn-primary" href="#" aria-label="Download on the App Store">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+      <a class="btn-secondary" href="#features">See features</a>
+    </div>
+    <div class="hero-sub">Free for Washington &nbsp;·&nbsp; <span>$2.99 unlocks all states + cameras</span> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; iOS</div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="features-inner">
+      <div class="section-label">// features</div>
+      <h2>Everything you need before hitting the pass</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🛣️</div>
+          <h3>Live Road Conditions</h3>
+          <p>Real-time status pulled directly from the Washington State DOT — updated continuously throughout the day.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📷</div>
+          <h3>DOT Camera Feeds</h3>
+          <p>Live camera images from every pass. Available with the full unlock — see conditions with your own eyes before you leave.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌨️</div>
+          <h3>Weather Alerts</h3>
+          <p>Current weather conditions and active restrictions — chains required, traction tires, closures, and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Fast &amp; Lightweight</h3>
+          <p>Loads instantly. No signup, no account, no bloat. Just the information you need, right now.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Privacy First</h3>
+          <p>Zero data collection. No tracking, no analytics, no location access. Your travel plans stay yours.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🆓</div>
+          <h3>Free to Start</h3>
+          <p>Washington State is completely free. Unlock all Rocky Mountain states and camera feeds for a one-time $2.99 — no subscription ever.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASSES -->
+  <section id="passes">
+    <div class="passes-inner">
+      <div class="section-label">// coverage</div>
+      <h2>Washington State mountain passes</h2>
+      <p class="passes-sub">Covering the passes that matter most to Washington drivers.</p>
+      <div class="pass-list">
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Snoqualmie Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Stevens Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot yellow"></div><span class="pass-name">White Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">North Cascades</span></div>
+        <div class="pass-pill"><div class="pass-dot orange"></div><span class="pass-name">Blewett Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Cayuse Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Chinook Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot yellow"></div><span class="pass-name">Manastash Ridge</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Sherman Pass</span></div>
+        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Loup Loup Pass</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD CTA -->
+  <section id="download">
+    <div class="cta-inner">
+      <div class="section-label">// download</div>
+      <h2>Ready to check the pass?</h2>
+      <p>Free on the App Store. No account, no ads, no nonsense.</p>
+      <a class="btn-primary" href="#" aria-label="Download on the App Store" style="display:inline-flex; margin: 0 auto;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Pass Checker//</div>
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="https://mountainmediadigital.com">Mountain Media Digital</a>
+      </div>
+      <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
