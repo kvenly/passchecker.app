@@ -62,7 +62,27 @@
       position: absolute; inset: 0;
       background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(34,197,94,0.08) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 1;
     }
+    #lottie-bg {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 0;
+      opacity: 0.45;
+      /* Fade out toward the bottom edge so it never crowds the hero buttons */
+      -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 95%);
+              mask-image: linear-gradient(to bottom, #000 55%, transparent 95%);
+    }
+    #lottie-bg svg { width: 100% !important; height: 100% !important; }
+    /* Lift hero content above the animation. Each direct child needs its own
+       position+z-index since z-index only applies to positioned elements. */
+    .hero .hero-icon,
+    .hero .hero-eyebrow,
+    .hero h1,
+    .hero p,
+    .hero-buttons,
+    .stats,
+    .hero-sub { position: relative; z-index: 2; }
+    @media (prefers-reduced-motion: reduce) { #lottie-bg { display: none; } }
     .hero-icon {
       width: 96px; height: 96px;
       border-radius: 22px;
@@ -169,6 +189,7 @@
 
   <!-- HERO -->
   <div class="hero">
+    <div id="lottie-bg"></div>
     <div class="hero-icon">
       <img src="icon.png" alt="Pass Checker app icon" style="width:96px;height:96px;border-radius:22px;display:block;" />
     </div>
@@ -438,6 +459,35 @@
       <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
     </div>
   </footer>
+
+  <script src="/lottie.min.js" defer></script>
+  <script>
+    // Hero background animation — same Lottie file the app uses.
+    // Honors prefers-reduced-motion (CSS hides the container) and lazy-loads
+    // after first paint so it doesn't block hero text.
+    (function () {
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+      function init() {
+        if (typeof lottie === 'undefined') return;
+        var container = document.getElementById('lottie-bg');
+        if (!container) return;
+        lottie.loadAnimation({
+          container: container,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: '/landing-bg.json',
+          rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
+        });
+      }
+      if (document.readyState === 'complete') {
+        init();
+      } else {
+        window.addEventListener('load', init);
+      }
+    })();
+  </script>
 
 </body>
 </html>
