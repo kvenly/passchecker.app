@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pass Checker — Washington State Road Conditions</title>
-  <meta name="description" content="Real-time road conditions, weather, and DOT camera feeds for Washington State mountain passes. Know before you go." />
-  <meta property="og:title" content="Pass Checker — Washington State Road Conditions" />
-  <meta property="og:description" content="Real-time road conditions, weather, and DOT camera feeds for Washington State mountain passes." />
+  <title>Pass Checker — Mountain Pass Conditions for the Western US & Canada</title>
+  <meta name="description" content="Real-time road conditions, weather, and live DOT camera feeds for 74 mountain passes across the Western US and Western Canada. Know before you go." />
+  <meta property="og:title" content="Pass Checker — Mountain Pass Conditions for the Western US & Canada" />
+  <meta property="og:description" content="Real-time road conditions, weather, and live DOT camera feeds for 74 mountain passes across the Western US and Western Canada." />
   <meta property="og:type" content="website" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,7 +73,7 @@
     .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
     .hero h1 { font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--fg); line-height: 1.1; margin-bottom: 20px; }
     .hero h1 span { color: var(--green); }
-    .hero p { font-size: 1.125rem; color: var(--dim); max-width: 440px; margin: 0 auto 40px; line-height: 1.75; }
+    .hero p { font-size: 1.125rem; color: var(--dim); max-width: 460px; margin: 0 auto 40px; line-height: 1.75; }
     .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
@@ -96,6 +96,18 @@
     .hero-sub { margin-top: 32px; font-family: var(--mono); font-size: 12px; color: var(--dimmer); letter-spacing: 0.06em; }
     .hero-sub span { color: var(--green); }
 
+    /* ── STATS STRIP ── */
+    .stats {
+      max-width: 720px; margin: 48px auto 0;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 28px 0;
+    }
+    .stat { text-align: center; padding: 0 16px; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: 0; }
+    .stat-num { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--green); letter-spacing: -0.02em; line-height: 1.1; }
+    .stat-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
+
     /* ── FEATURES ── */
     #features { padding: 96px 24px; background: var(--bg); }
     .features-inner { max-width: 960px; margin: 0 auto; }
@@ -108,17 +120,21 @@
     .feature-card h3 { font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
     .feature-card p { font-size: 14px; color: var(--dim); line-height: 1.7; }
 
-    /* ── PASSES ── */
+    /* ── COVERAGE ── */
     #passes { padding: 96px 24px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .passes-inner { max-width: 960px; margin: 0 auto; }
     .passes-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 12px; }
-    .passes-sub { font-size: 15px; color: var(--dim); margin-bottom: 40px; }
-    .pass-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-    .pass-pill { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-    .pass-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .pass-dot.green  { background: #22c55e; }
-    .pass-dot.yellow { background: #eab308; }
-    .pass-dot.orange { background: #f97316; }
+    .passes-sub { font-size: 15px; color: var(--dim); margin-bottom: 40px; max-width: 560px; }
+    .region-group { margin-bottom: 32px; }
+    .region-title {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .region-title .count { color: var(--dimmer); }
+    .pass-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+    .pass-pill { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .pass-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .pass-name { font-size: 13px; color: var(--dim); font-family: var(--mono); }
 
     /* ── DOWNLOAD CTA ── */
@@ -145,8 +161,8 @@
       <a class="nav-logo" href="#">Pass Checker//</a>
       <div class="nav-right">
         <a href="#features">Features</a>
-        <a href="#passes">Passes</a>
-        <a href="#download" class="nav-dl">Download</a>
+        <a href="#passes">Coverage</a>
+        <a href="https://apps.apple.com/us/app/pass-checker/id6764229547" class="nav-dl">Download</a>
       </div>
     </div>
   </nav>
@@ -156,17 +172,33 @@
     <div class="hero-icon">
       <img src="icon.png" alt="Pass Checker app icon" style="width:96px;height:96px;border-radius:22px;display:block;" />
     </div>
-    <div class="hero-eyebrow">Washington State</div>
+    <div class="hero-eyebrow">Western US &nbsp;·&nbsp; Western Canada</div>
     <h1>Know before<br>you <span>go.</span></h1>
-    <p>Real-time road conditions, weather alerts, and live DOT camera feeds for Washington State mountain passes.</p>
+    <p>Real-time road conditions, weather, and live DOT camera feeds for 74 mountain passes across the Western US and Western Canada.</p>
     <div class="hero-buttons">
-      <a class="btn-primary" href="#" aria-label="Download on the App Store">
+      <a class="btn-primary" href="https://apps.apple.com/us/app/pass-checker/id6764229547" aria-label="Download on the App Store">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download on the App Store
       </a>
       <a class="btn-secondary" href="#features">See features</a>
     </div>
-    <div class="hero-sub">Free for Washington &nbsp;·&nbsp; <span>$2.99 unlocks all states + cameras</span> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; iOS</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">74</div>
+        <div class="stat-label">Passes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15</div>
+        <div class="stat-label">States &amp; Provinces</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$4.99</div>
+        <div class="stat-label">One-time unlock</div>
+      </div>
+    </div>
+
+    <div class="hero-sub">Free for Washington &nbsp;·&nbsp; <span>$4.99 unlocks every pass</span> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; No subscription &nbsp;·&nbsp; iOS</div>
   </div>
 
   <!-- FEATURES -->
@@ -178,17 +210,17 @@
         <div class="feature-card">
           <div class="feature-icon">🛣️</div>
           <h3>Live Road Conditions</h3>
-          <p>Real-time status pulled directly from the Washington State DOT — updated continuously throughout the day.</p>
+          <p>Real-time status from every state DOT and DriveBC — closures, restrictions, chain-up advisories, and weather warnings.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📷</div>
-          <h3>DOT Camera Feeds</h3>
-          <p>Live camera images from every pass. Available with the full unlock — see conditions with your own eyes before you leave.</p>
+          <h3>Live DOT Cameras</h3>
+          <p>Hundreds of camera feeds across every supported pass. See conditions with your own eyes before you leave.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🌨️</div>
-          <h3>Weather Alerts</h3>
-          <p>Current weather conditions and active restrictions — chains required, traction tires, closures, and more.</p>
+          <h3>Summit Temperatures</h3>
+          <p>Current temperatures at every summit — pulled from roadside weather stations and high-resolution forecast models where stations don't reach.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">⚡</div>
@@ -202,30 +234,182 @@
         </div>
         <div class="feature-card">
           <div class="feature-icon">🆓</div>
-          <h3>Free to Start</h3>
-          <p>Washington State is completely free. Unlock all Rocky Mountain states and camera feeds for a one-time $2.99 — no subscription ever.</p>
+          <h3>Pay Once, Done</h3>
+          <p>Washington is free forever. $4.99 unlocks everything else — including future states and provinces we add. No subscription, ever.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PASSES -->
+  <!-- COVERAGE -->
   <section id="passes">
     <div class="passes-inner">
       <div class="section-label">// coverage</div>
-      <h2>Washington State mountain passes</h2>
-      <p class="passes-sub">Covering the passes that matter most to Washington drivers.</p>
-      <div class="pass-list">
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Snoqualmie Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Stevens Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot yellow"></div><span class="pass-name">White Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">North Cascades</span></div>
-        <div class="pass-pill"><div class="pass-dot orange"></div><span class="pass-name">Blewett Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Cayuse Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Chinook Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot yellow"></div><span class="pass-name">Manastash Ridge</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Sherman Pass</span></div>
-        <div class="pass-pill"><div class="pass-dot green"></div><span class="pass-name">Loup Loup Pass</span></div>
+      <h2>74 passes across 13 states &amp; 2 provinces</h2>
+      <p class="passes-sub">From the Cascades to the Rockies to the Selkirks. New regions added at no extra cost — your one-time unlock covers everything we ship.</p>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Washington &nbsp;<span style="color:var(--dim);font-weight:normal;">— free</span></span><span class="count">11 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Snoqualmie Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Stevens Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">White Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">North Cascades</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Mt Baker</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Blewett Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Cayuse Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Chinook Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Manastash Ridge</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Sherman Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Loup Loup Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Oregon</span><span class="count">5 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Santiam Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">McKenzie Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Willamette Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Deadman Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Siskiyou Summit</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 California</span><span class="count">5 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Donner Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Tioga Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Echo Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Monitor Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Sonora Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Nevada</span><span class="count">3 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Spooner Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Mount Rose Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Kingsbury Grade</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Idaho</span><span class="count">4 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Fourth of July Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Galena Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Lolo Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Lost Trail Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Montana</span><span class="count">4 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Marias Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Rogers Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">MacDonald Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Lookout Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Wyoming</span><span class="count">4 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Togwotee Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Teton Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">South Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Powder River Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Colorado</span><span class="count">7 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Vail Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Loveland Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Eisenhower Tunnel</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Berthoud Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Wolf Creek Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Monarch Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Independence Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Utah</span><span class="count">4 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Parleys Canyon</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Little Cottonwood Canyon</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Big Cottonwood Canyon</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Soldier Summit</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Arizona</span><span class="count">3 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Mingus Mountain</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Oak Creek Canyon</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Sitgreaves Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 New Mexico</span><span class="count">3 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Raton Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Glorieta Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Tijeras Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Alaska</span><span class="count">4 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Thompson Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Hatcher Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Isabel Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">White Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇺🇸 Hawaii</span><span class="count">2 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Mauna Kea Access Rd</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Saddle Road</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇨🇦 British Columbia</span><span class="count">9 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Coquihalla Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Allison Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Kootenay Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Rogers Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Pine Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Yellowhead Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Duffey Lake Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Blueberry-Paulson</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Eagle Pass</span></div>
+        </div>
+      </div>
+
+      <div class="region-group">
+        <div class="region-title"><span>🇨🇦 Alberta</span><span class="count">6 passes</span></div>
+        <div class="pass-list">
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Highwood Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Bow Summit</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Sunwapta Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Vermilion Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Kicking Horse Pass</span></div>
+          <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Crowsnest Pass</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -235,8 +419,8 @@
     <div class="cta-inner">
       <div class="section-label">// download</div>
       <h2>Ready to check the pass?</h2>
-      <p>Free on the App Store. No account, no ads, no nonsense.</p>
-      <a class="btn-primary" href="#" aria-label="Download on the App Store" style="display:inline-flex; margin: 0 auto;">
+      <p>Free on the App Store. Washington forever free. $4.99 unlocks everything else — no subscription, no ads, no account.</p>
+      <a class="btn-primary" href="https://apps.apple.com/us/app/pass-checker/id6764229547" aria-label="Download on the App Store" style="display:inline-flex; margin: 0 auto;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download on the App Store
       </a>
