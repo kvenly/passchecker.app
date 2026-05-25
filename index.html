@@ -128,43 +128,68 @@
     .stat-num { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--green); letter-spacing: -0.02em; line-height: 1.1; }
     .stat-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
 
-    /* ── SCREENSHOTS GALLERY ── */
-    #screenshots { padding: 80px 24px 32px; background: var(--bg); }
-    .screenshots-inner { max-width: 960px; margin: 0 auto; }
+    /* ── SCREENSHOTS GALLERY (featured + thumbnails) ── */
+    #screenshots { padding: 80px 24px 64px; background: var(--bg); }
+    .screenshots-inner { max-width: 720px; margin: 0 auto; text-align: left; }
     .screenshots-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 12px; }
     .screenshots-sub { color: var(--dim); font-size: 15px; margin-bottom: 36px; max-width: 600px; }
-    /* Mobile: horizontal scroll-snap rail. Desktop: 3-col grid. */
-    .screenshot-rail {
-      display: flex; gap: 16px; overflow-x: auto;
-      scroll-snap-type: x mandatory; padding: 4px 24px 20px;
-      margin: 0 -24px;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
-    }
-    .screenshot-rail::-webkit-scrollbar { height: 4px; }
-    .screenshot-rail::-webkit-scrollbar-track { background: transparent; }
-    .screenshot-rail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .screenshot-frame {
-      flex: 0 0 auto; width: 240px;
-      scroll-snap-align: center;
-      border-radius: 22px; overflow: hidden;
+    .gallery { display: flex; flex-direction: column; align-items: center; gap: 22px; margin-top: 24px; }
+    /* The featured "phone" — fixed phone aspect (9:19.5), cross-fades between images */
+    .gallery-stage {
+      position: relative;
+      width: clamp(240px, 70vw, 320px);
+      aspect-ratio: 9 / 19.5;
+      border-radius: 28px; overflow: hidden;
       background: #000;
       border: 1px solid var(--border);
-      box-shadow: 0 18px 36px rgba(0,0,0,0.45);
-      transition: transform 0.25s ease, border-color 0.25s ease;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(34,197,94,0.06);
     }
-    .screenshot-frame:hover { border-color: var(--green2); transform: translateY(-4px); }
-    .screenshot-frame img { display: block; width: 100%; height: auto; }
+    .gallery-stage img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      opacity: 0; transition: opacity 0.45s ease;
+      display: block;
+    }
+    .gallery-stage img.active { opacity: 1; }
+    .gallery-caption {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      min-height: 1.4em; text-align: center;
+      transition: opacity 0.25s ease;
+    }
+    /* Thumbnail strip — small clickable previews */
+    .gallery-thumbs {
+      display: flex; flex-wrap: nowrap; gap: 8px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding: 6px 24px 10px; margin: 0 -24px;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+      scroll-snap-type: x proximity;
+      max-width: 100%;
+    }
+    .gallery-thumbs::-webkit-scrollbar { height: 3px; }
+    .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .gallery-thumb {
+      flex: 0 0 auto;
+      width: 44px;
+      aspect-ratio: 9 / 19.5;
+      border-radius: 7px; overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border);
+      cursor: pointer; padding: 0;
+      opacity: 0.5;
+      transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      scroll-snap-align: center;
+    }
+    .gallery-thumb:hover { opacity: 0.9; }
+    .gallery-thumb.active { opacity: 1; border-color: var(--green); transform: scale(1.12); }
+    .gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
     @media (min-width: 768px) {
-      .screenshot-rail {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-        overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 4px 0 0; margin: 0;
-      }
-      .screenshot-frame { width: 100%; }
+      .gallery-thumbs { justify-content: center; flex-wrap: wrap; padding: 6px 0 0; margin: 0; overflow-x: visible; max-width: none; }
+      .gallery-thumb { width: 52px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gallery-stage img, .gallery-caption, .gallery-thumb { transition: none; }
     }
 
     /* ── FEATURES ── */
@@ -268,18 +293,73 @@
       <div class="section-label">// see it</div>
       <h2>Built to be glanced at, not stared at</h2>
       <p class="screenshots-sub">Every screen is information-first, with a terminal aesthetic that respects your time and your data.</p>
-      <div class="screenshot-rail">
-        <div class="screenshot-frame"><img src="/img/Hero.png" alt="Snoqualmie Pass conditions — OPEN, with summit temperature and weather alerts" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Camera.png" alt="Live DOT camera feeds for Tinkham Road and Denny Creek on I-90" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/States.png" alt="State picker — Washington marked free, with full Canadian and US coverage" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Closed.png" alt="Closed pass alert with travel restrictions" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Paywall.png" alt="One-time $4.99 unlock — no subscription, no ads, all states and cameras" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Terminal-1.png" alt="Mt Baker pass in the green phosphor terminal theme" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Terminal-2.png" alt="Pass conditions in an alternate terminal theme" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Terminal-3.png" alt="Pass conditions in a third terminal theme" loading="lazy" /></div>
-        <div class="screenshot-frame"><img src="/img/Landing-Page.png" alt="Pass Checker landing page on first launch" loading="lazy" /></div>
+      <div class="gallery" id="gallery">
+        <!-- Featured "phone" — all images stacked, cross-fade between them -->
+        <div class="gallery-stage" id="gallery-stage">
+          <img src="/img/Hero.png"         alt="Snoqualmie Pass — OPEN status with summit temperature and weather alerts" data-caption="Pass conditions, glanceable" class="active" />
+          <img src="/img/Camera.png"       alt="Live DOT camera feeds at Tinkham Road and Denny Creek on I-90" data-caption="Live DOT cameras at every pass" loading="lazy" />
+          <img src="/img/States.png"       alt="State picker — Washington marked free, US states and Canadian provinces" data-caption="30 US states · 2 Canadian provinces" loading="lazy" />
+          <img src="/img/Closed.png"       alt="Closed mountain pass with travel restrictions" data-caption="Closures, alerts, restrictions" loading="lazy" />
+          <img src="/img/Paywall.png"      alt="One-time $4.99 unlock — no subscription, no ads" data-caption="$4.99 unlocks every pass · forever" loading="lazy" />
+          <img src="/img/Terminal-1.png"   alt="Mt Baker in the phosphor green terminal theme" data-caption="Six collectible terminal themes" loading="lazy" />
+          <img src="/img/Terminal-2.png"   alt="Pass conditions in an alternate terminal theme" data-caption="Phosphor. Amber. Glacial." loading="lazy" />
+          <img src="/img/Terminal-3.png"   alt="Pass conditions in a third terminal theme" data-caption="Skeuomorphic. Paper. Plum." loading="lazy" />
+          <img src="/img/Landing-Page.png" alt="Pass Checker landing page on first launch" data-caption="Built by a hiker who drives these roads" loading="lazy" />
+        </div>
+        <div class="gallery-caption" id="gallery-caption">Pass conditions, glanceable</div>
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          <button class="gallery-thumb active" data-index="0" aria-label="Pass conditions"><img src="/img/Hero.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="1" aria-label="Live cameras"><img src="/img/Camera.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="2" aria-label="State picker"><img src="/img/States.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="3" aria-label="Closed pass alert"><img src="/img/Closed.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="4" aria-label="Pricing"><img src="/img/Paywall.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="5" aria-label="Phosphor theme"><img src="/img/Terminal-1.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="6" aria-label="Alternate theme"><img src="/img/Terminal-2.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="7" aria-label="Third theme"><img src="/img/Terminal-3.png" alt="" /></button>
+          <button class="gallery-thumb"        data-index="8" aria-label="Landing page"><img src="/img/Landing-Page.png" alt="" /></button>
+        </div>
       </div>
     </div>
+    <script>
+      // Featured-phone swap + auto-advance. Tiny, dependency-free, accessible.
+      (function initGallery() {
+        const stage   = document.getElementById('gallery-stage');
+        const thumbs  = document.getElementById('gallery-thumbs');
+        const caption = document.getElementById('gallery-caption');
+        const wrap    = document.getElementById('gallery');
+        if (!stage || !thumbs || !wrap) return;
+        const images  = stage.querySelectorAll('img');
+        const buttons = thumbs.querySelectorAll('.gallery-thumb');
+        let index = 0, timer = null, paused = false;
+        const ROTATE_MS = 5000;
+
+        function show(i) {
+          index = ((i % images.length) + images.length) % images.length;
+          images.forEach((img, j) => img.classList.toggle('active', j === index));
+          buttons.forEach((b, j) => b.classList.toggle('active', j === index));
+          if (caption) caption.textContent = images[index].dataset.caption || '';
+        }
+        function next()  { if (!paused) show(index + 1); }
+        function start() { stop(); timer = setInterval(next, ROTATE_MS); }
+        function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            show(parseInt(btn.dataset.index, 10));
+            start(); // reset timer so the next swap is a full 5s away
+          });
+        });
+        wrap.addEventListener('mouseenter', () => { paused = true; });
+        wrap.addEventListener('mouseleave', () => { paused = false; });
+        // Pause when tab hidden — don't burn CPU in background
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) stop(); else start();
+        });
+        // Respect reduced motion — don't auto-advance
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        start();
+      })();
+    </script>
   </section>
 
   <!-- FEATURES -->
