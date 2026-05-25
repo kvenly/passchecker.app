@@ -128,6 +128,45 @@
     .stat-num { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--green); letter-spacing: -0.02em; line-height: 1.1; }
     .stat-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
 
+    /* ── SCREENSHOTS GALLERY ── */
+    #screenshots { padding: 80px 24px 32px; background: var(--bg); }
+    .screenshots-inner { max-width: 960px; margin: 0 auto; }
+    .screenshots-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 12px; }
+    .screenshots-sub { color: var(--dim); font-size: 15px; margin-bottom: 36px; max-width: 600px; }
+    /* Mobile: horizontal scroll-snap rail. Desktop: 3-col grid. */
+    .screenshot-rail {
+      display: flex; gap: 16px; overflow-x: auto;
+      scroll-snap-type: x mandatory; padding: 4px 24px 20px;
+      margin: 0 -24px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .screenshot-rail::-webkit-scrollbar { height: 4px; }
+    .screenshot-rail::-webkit-scrollbar-track { background: transparent; }
+    .screenshot-rail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .screenshot-frame {
+      flex: 0 0 auto; width: 240px;
+      scroll-snap-align: center;
+      border-radius: 22px; overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 36px rgba(0,0,0,0.45);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .screenshot-frame:hover { border-color: var(--green2); transform: translateY(-4px); }
+    .screenshot-frame img { display: block; width: 100%; height: auto; }
+    @media (min-width: 768px) {
+      .screenshot-rail {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 4px 0 0; margin: 0;
+      }
+      .screenshot-frame { width: 100%; }
+    }
+
     /* ── FEATURES ── */
     #features { padding: 96px 24px; background: var(--bg); }
     .features-inner { max-width: 960px; margin: 0 auto; }
@@ -180,6 +219,7 @@
     <div class="nav-inner">
       <a class="nav-logo" href="#">Pass Checker//</a>
       <div class="nav-right">
+        <a href="#screenshots">Screens</a>
         <a href="#features">Features</a>
         <a href="#passes">Coverage</a>
         <a href="https://apps.apple.com/us/app/pass-checker/id6764229547" class="nav-dl">Download</a>
@@ -219,8 +259,28 @@
       </div>
     </div>
 
-    <div class="hero-sub">Free for Washington &nbsp;·&nbsp; <span>$4.99 unlocks every pass</span> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; No subscription &nbsp;·&nbsp; iOS</div>
+    <div class="hero-sub">Free for WA &amp; BC &nbsp;·&nbsp; <span>$4.99 unlocks every pass</span> &nbsp;·&nbsp; No ads &nbsp;·&nbsp; No subscription &nbsp;·&nbsp; iOS</div>
   </div>
+
+  <!-- SCREENSHOTS GALLERY -->
+  <section id="screenshots">
+    <div class="screenshots-inner">
+      <div class="section-label">// see it</div>
+      <h2>Built to be glanced at, not stared at</h2>
+      <p class="screenshots-sub">Every screen is information-first, with a terminal aesthetic that respects your time and your data.</p>
+      <div class="screenshot-rail">
+        <div class="screenshot-frame"><img src="/img/Hero.png" alt="Snoqualmie Pass conditions — OPEN, with summit temperature and weather alerts" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Camera.png" alt="Live DOT camera feeds for Tinkham Road and Denny Creek on I-90" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/States.png" alt="State picker — Washington marked free, with full Canadian and US coverage" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Closed.png" alt="Closed pass alert with travel restrictions" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Paywall.png" alt="One-time $4.99 unlock — no subscription, no ads, all states and cameras" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Terminal-1.png" alt="Mt Baker pass in the green phosphor terminal theme" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Terminal-2.png" alt="Pass conditions in an alternate terminal theme" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Terminal-3.png" alt="Pass conditions in a third terminal theme" loading="lazy" /></div>
+        <div class="screenshot-frame"><img src="/img/Landing-Page.png" alt="Pass Checker landing page on first launch" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
 
   <!-- FEATURES -->
   <section id="features">
@@ -256,7 +316,7 @@
         <div class="feature-card">
           <div class="feature-icon">🆓</div>
           <h3>Pay Once, Done</h3>
-          <p>Washington is free forever. $4.99 unlocks every other state, every camera, all six terminal themes, and every region we add later. No subscription, ever.</p>
+          <p>Washington and British Columbia are free forever. $4.99 unlocks every other state and province, every camera, all six terminal themes, and every region we add later. No subscription, ever.</p>
         </div>
       </div>
     </div>
@@ -569,7 +629,7 @@
       </div>
 
       <div class="region-group">
-        <div class="region-title"><span>🇨🇦 British Columbia</span><span class="count">9 passes</span></div>
+        <div class="region-title"><span>🇨🇦 British Columbia &nbsp;<span style="color:var(--dim);font-weight:normal;">— free</span></span><span class="count">9 passes</span></div>
         <div class="pass-list">
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Coquihalla Summit</span></div>
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Allison Pass</span></div>
@@ -602,7 +662,7 @@
     <div class="cta-inner">
       <div class="section-label">// download</div>
       <h2>Ready to check the pass?</h2>
-      <p>Free on the App Store. Washington forever free. $4.99 unlocks everything else — no subscription, no ads, no account.</p>
+      <p>Free on the App Store. Washington &amp; British Columbia forever free. $4.99 unlocks everything else — no subscription, no ads, no account.</p>
       <a class="btn-primary" href="https://apps.apple.com/us/app/pass-checker/id6764229547" aria-label="Download on the App Store" style="display:inline-flex; margin: 0 auto;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download on the App Store
