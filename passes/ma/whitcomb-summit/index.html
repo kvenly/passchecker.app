@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is Whitcomb Summit Open? Live Whitcomb Summit MA 2 Conditions</title>
+<meta name="description" content="Live Whitcomb Summit road conditions: current open or closed status, summit temperature, and restrictions on MA 2 in Massachusetts. Updated continuously from DOT data.">
+<link rel="canonical" href="https://passchecker.app/passes/ma/whitcomb-summit/">
+<meta property="og:title" content="Is Whitcomb Summit Open? Live Whitcomb Summit MA 2 Conditions">
+<meta property="og:description" content="Live Whitcomb Summit road conditions: current open or closed status, summit temperature, and restrictions on MA 2 in Massachusetts. Updated continuously from DOT data.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/icon.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0a;--bg2:#111;--fg:#f1f3f7;--dim:#a1a6b0;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--border:#1f2937;--mono:'Courier New',monospace;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6;max-width:640px;margin:0 auto;padding:24px}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
+.crumb{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:28px}
+.crumb a{color:var(--dim)}
+h1{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800;letter-spacing:-0.02em;line-height:1.15;margin-bottom:8px}
+.sub{color:var(--dim);font-size:14px;margin-bottom:28px}
+.status-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:28px}
+.status-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.status-word{font-size:44px;font-weight:900;letter-spacing:-1px;line-height:1}
+.status-word.open{color:var(--green)}.status-word.closed{color:var(--red)}.status-word.restricted{color:var(--yellow)}.status-word.loading{color:var(--dim);font-size:22px;font-weight:400}
+.meta{display:flex;gap:32px;margin-top:18px}
+.meta div span{display:block}
+.meta .lbl{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.meta .val{font-size:19px;font-weight:700}
+.events{margin-top:18px;border-top:1px solid var(--border);padding-top:14px;font-size:13px;color:var(--dim)}
+.updated{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:14px;letter-spacing:1px}
+.cta{display:block;text-align:center;background:var(--green);color:#000;font-weight:800;font-size:15px;padding:15px;border-radius:12px;margin:28px 0}
+.cta:hover{opacity:.9;text-decoration:none}
+.body-copy{color:var(--dim);font-size:14px;margin-bottom:14px}
+.body-copy strong{color:var(--fg)}
+h2{font-size:16px;font-weight:700;margin:28px 0 12px}
+.sibs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.sib{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 13px;font-size:13px;color:var(--fg)}
+.sib:hover{border-color:var(--green);text-decoration:none}
+footer{border-top:1px solid var(--border);padding-top:18px;margin-top:36px;font-size:12px;color:var(--dim)}
+footer .legal{font-size:11px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Passes</a> / <a href="/passes/ma/">Massachusetts</a></div>
+<h1>Is Whitcomb Summit open right now?</h1>
+<p class="sub">Whitcomb Summit MA 2 &middot; Massachusetts</p>
+<div class="status-card">
+  <div class="status-label">Current status</div>
+  <div class="status-word loading" id="live-status">Checking&hellip;</div>
+  <div class="meta">
+    <div><span class="lbl">Temp</span><span class="val" id="t-val">&ndash;</span></div>
+    <div><span class="lbl">Summit elev</span><span class="val" id="e-val">&ndash;</span></div>
+  </div>
+  <div class="events" id="events" style="display:none"></div>
+  <div class="updated" id="u-val"></div>
+</div>
+<a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
+<p class="body-copy"><strong>Whitcomb Summit</strong> on <strong>MA 2</strong> connects <strong>Florida</strong> and <strong>Charlemont</strong> in Massachusetts. The live status above comes from official DOT data and refreshes continuously through the day.</p>
+<p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in Massachusetts.</p>
+<h2>Other Massachusetts passes</h2>
+<div class="sibs"><a class="sib" href="/passes/ma/mohawk-trail-hairpin/">Mohawk Trail Hairpin MA 2</a><a class="sib" href="/passes/ma/jacobs-ladder/">Jacobs Ladder US 20</a></div>
+<footer>
+<div><a href="/">Pass Checker</a> shows live conditions for 134 mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
+<div class="legal">For info only. Always verify with your local DOT before travel. &copy; 2026 Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/privacy.html">Privacy</a></div>
+</footer>
+
+<script>
+(async function () {
+  var el = document.getElementById('live-status');
+  var setText = function (id, t) { var n = document.getElementById(id); if (n) n.textContent = t; };
+  try {
+    for (var i = 0; i < 10; i++) {
+      var r = await fetch('https://pass-checker-api.onrender.com/passes/MA');
+      var d = await r.json();
+      if (d.data) {
+        var p = d.data.find(function (x) { return x.name === "Whitcomb Summit MA 2"; });
+        if (!p) break;
+        el.textContent = p.status === 'restricted' ? 'OPEN*' : p.status.toUpperCase();
+        el.className = 'status-word ' + p.status;
+        if (p.temp_f != null) setText('t-val', Math.round(p.temp_f) + '\u00B0F');
+        if (p.elevation_ft != null) setText('e-val', Number(p.elevation_ft).toLocaleString() + ' ft');
+        if (p.updated) {
+          var mins = Math.max(0, Math.round((Date.now() - new Date(p.updated)) / 60000));
+          var rel = mins < 60 ? mins + ' min ago' : mins < 2880 ? Math.round(mins / 60) + ' hr ago' : Math.round(mins / 1440) + ' days ago';
+          setText('u-val', 'Updated ' + rel);
+        }
+        var ev = (p.events || []).filter(function (e) { return e.type !== 'status'; });
+        if (p.status === 'restricted' && ev.length) {
+          document.getElementById('events').textContent = ev[0].description || 'Restrictions in effect.';
+          document.getElementById('events').style.display = 'block';
+        }
+        return;
+      }
+      await new Promise(function (res) { setTimeout(res, 6000); });
+    }
+    el.textContent = 'See app for status';
+    el.className = 'status-word loading';
+  } catch (e) {
+    el.textContent = 'See app for status';
+    el.className = 'status-word loading';
+  }
+})();
+</script>
+</body></html>
