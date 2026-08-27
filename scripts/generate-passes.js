@@ -82,7 +82,7 @@ function head(title, desc, canonical) {
 }
 
 const footer = `<footer>
-<div><a href="/">Pass Checker</a> shows live conditions for 146 mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
+<div><a href="/">Pass Checker</a> shows live conditions for 168 mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
 <div class="legal">For info only. Always verify with your local DOT before travel. &copy; ${new Date().getFullYear()} Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/privacy.html">Privacy</a></div>
 </footer>
 </body></html>`;
@@ -184,15 +184,15 @@ ${footer}`;
 }
 
 function indexPage(regions) {
-  const title = `Mountain Pass Conditions — 146 Passes, Live Status`;
-  const desc = `Live open/closed status for 146 mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
+  const title = `Mountain Pass Conditions — 168 Passes, Live Status`;
+  const desc = `Live open/closed status for 168 mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
   const groups = regions
     .map(r => `<h2>${r.name}</h2><div class="sibs">${r.passes.map(p => `<a class="sib" href="/passes/${r.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>`).join('')}</div>`)
     .join('');
   return head(title, desc, `${SITE}/passes/`) + `
 <div class="crumb"><a href="/">Pass Checker</a></div>
 <h1>Live mountain pass conditions</h1>
-<p class="sub">146 passes &middot; 30 states &middot; 2 provinces</p>
+<p class="sub">168 passes &middot; 30 states &middot; 2 provinces</p>
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
 ${groups}
 ${footer}`;

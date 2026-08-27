@@ -58,6 +58,31 @@
         "name": "Manastash Ridge US 97",
         "west": "Ellensburg",
         "east": "Yakima"
+      },
+      {
+        "name": "Tiger Mountain SR 18",
+        "west": "Auburn",
+        "east": "Snoqualmie"
+      },
+      {
+        "name": "Satus Pass US 97",
+        "west": "Goldendale",
+        "east": "Toppenish"
+      },
+      {
+        "name": "Disautel Pass SR 155",
+        "west": "Omak",
+        "east": "Nespelem"
+      },
+      {
+        "name": "Wauconda Pass SR 20",
+        "west": "Tonasket",
+        "east": "Republic"
+      },
+      {
+        "name": "Crystal to Greenwater SR 410",
+        "west": "Enumclaw",
+        "east": "Crystal Mountain"
       }
     ]
   },
@@ -122,6 +147,31 @@
         "name": "Sonora Pass CA 108",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Tejon Pass I-5",
+        "west": "Bakersfield",
+        "east": "Santa Clarita"
+      },
+      {
+        "name": "Cajon Pass I-15",
+        "west": "San Bernardino",
+        "east": "Victorville"
+      },
+      {
+        "name": "Carson Pass CA 88",
+        "west": "Jackson",
+        "east": "Woodfords"
+      },
+      {
+        "name": "Ebbetts Pass CA 4",
+        "west": "Angels Camp",
+        "east": "Markleeville"
+      },
+      {
+        "name": "Luther Pass CA 89",
+        "west": "Meyers",
+        "east": "Hope Valley"
       }
     ]
   },
@@ -273,6 +323,26 @@
         "name": "Lost Trail Pass US 93",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Monida Pass I-15",
+        "west": "Dubois",
+        "east": "Lima"
+      },
+      {
+        "name": "White Bird Hill US 95",
+        "west": "White Bird",
+        "east": "Grangeville"
+      },
+      {
+        "name": "Targhee Pass US 20",
+        "west": "Ashton",
+        "east": "West Yellowstone"
+      },
+      {
+        "name": "Banner Summit ID 21",
+        "west": "Lowman",
+        "east": "Stanley"
       }
     ]
   },
@@ -354,6 +424,36 @@
         "name": "Soldier Summit US 6",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Sardine Summit US 89",
+        "west": "Brigham City",
+        "east": "Logan"
+      },
+      {
+        "name": "Bear Lake Summit US 89",
+        "west": "Logan",
+        "east": "Garden City"
+      },
+      {
+        "name": "Daniels Summit US 40",
+        "west": "Heber City",
+        "east": "Duchesne"
+      },
+      {
+        "name": "Provo Canyon US 189",
+        "west": "Orem",
+        "east": "Heber City"
+      },
+      {
+        "name": "Bald Mountain Pass UT 150",
+        "west": "Kamas",
+        "east": "Evanston"
+      },
+      {
+        "name": "Monte Cristo Summit UT 39",
+        "west": "Huntsville",
+        "east": "Woodruff"
       }
     ]
   },
@@ -376,6 +476,16 @@
         "name": "Sitgreaves Pass AZ 66",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Arizona Divide I-40",
+        "west": "Williams",
+        "east": "Flagstaff"
+      },
+      {
+        "name": "Salt River Canyon US 60",
+        "west": "Globe",
+        "east": "Show Low"
       }
     ]
   },
