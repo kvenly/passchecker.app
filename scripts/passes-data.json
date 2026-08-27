@@ -164,6 +164,66 @@
         "name": "Independence Pass CO 82",
         "west": "Aspen",
         "east": "Twin Lakes"
+      },
+      {
+        "name": "Rabbit Ears Pass US 40",
+        "west": "Steamboat Springs",
+        "east": "Kremmling"
+      },
+      {
+        "name": "Red Mountain Pass US 550",
+        "west": "Ouray",
+        "east": "Silverton"
+      },
+      {
+        "name": "Molas Pass US 550",
+        "west": "Silverton",
+        "east": "Durango"
+      },
+      {
+        "name": "Coal Bank Pass US 550",
+        "west": "Durango",
+        "east": "Silverton"
+      },
+      {
+        "name": "Hoosier Pass CO 9",
+        "west": "Breckenridge",
+        "east": "Alma"
+      },
+      {
+        "name": "Fremont Pass CO 91",
+        "west": "Copper Mountain",
+        "east": "Leadville"
+      },
+      {
+        "name": "Cameron Pass CO 14",
+        "west": "Walden",
+        "east": "Fort Collins"
+      },
+      {
+        "name": "La Veta Pass US 160",
+        "west": "Fort Garland",
+        "east": "Walsenburg"
+      },
+      {
+        "name": "Tennessee Pass US 24",
+        "west": "Minturn",
+        "east": "Leadville"
+      },
+      {
+        "name": "Lizard Head Pass CO 145",
+        "west": "Rico",
+        "east": "Telluride"
+      },
+      {
+        "name": "McClure Pass CO 133",
+        "west": "Paonia",
+        "east": "Carbondale"
+      },
+      {
+        "name": "Trail Ridge Road US 34",
+        "west": "Grand Lake",
+        "east": "Estes Park"
       }
     ]
   },
@@ -836,7 +896,7 @@
       },
       {
         "name": "Yellowhead Pass Hwy 16",
-        "west": "Tête Jaune",
+        "west": "T\u00eate Jaune",
         "east": "Jasper"
       },
       {
