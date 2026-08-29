@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Is Powder River Pass Open? Live Powder River Pass US 16 Conditions</title>
-<meta name="description" content="Live Powder River Pass road conditions: current open or closed status, summit temperature, and restrictions on US 16 in Wyoming. Updated continuously from DOT data.">
-<link rel="canonical" href="https://passchecker.app/passes/wy/powder-river-pass/">
-<meta property="og:title" content="Is Powder River Pass Open? Live Powder River Pass US 16 Conditions">
-<meta property="og:description" content="Live Powder River Pass road conditions: current open or closed status, summit temperature, and restrictions on US 16 in Wyoming. Updated continuously from DOT data.">
+<title>Is Sherman Summit Open? Live Sherman Summit I-80 Conditions</title>
+<meta name="description" content="Live Sherman Summit road conditions: current open or closed status, summit temperature, and restrictions on I-80 in Wyoming. Updated continuously from DOT data.">
+<link rel="canonical" href="https://passchecker.app/passes/wy/sherman-summit/">
+<meta property="og:title" content="Is Sherman Summit Open? Live Sherman Summit I-80 Conditions">
+<meta property="og:description" content="Live Sherman Summit road conditions: current open or closed status, summit temperature, and restrictions on I-80 in Wyoming. Updated continuously from DOT data.">
 <meta property="og:type" content="website">
 <link rel="icon" href="/icon.png">
 <style>
@@ -43,8 +43,8 @@ footer .legal{font-size:11px;margin-top:8px}
 </head>
 <body>
 <div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Passes</a> / <a href="/passes/wy/">Wyoming</a></div>
-<h1>Is Powder River Pass open right now?</h1>
-<p class="sub">Powder River Pass US 16 &middot; Wyoming</p>
+<h1>Is Sherman Summit open right now?</h1>
+<p class="sub">Sherman Summit I-80 &middot; Wyoming</p>
 <div class="status-card">
   <div class="status-label">Current status</div>
   <div class="status-word loading" id="live-status">Checking&hellip;</div>
@@ -56,10 +56,10 @@ footer .legal{font-size:11px;margin-top:8px}
   <div class="updated" id="u-val"></div>
 </div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
-<p class="body-copy"><strong>Powder River Pass</strong> on <strong>US 16</strong> is one of Wyoming's key mountain crossings. The live status above comes from official DOT data and refreshes continuously through the day.</p>
+<p class="body-copy"><strong>Sherman Summit</strong> on <strong>I-80</strong> connects <strong>Laramie</strong> and <strong>Cheyenne</strong> in Wyoming. The live status above comes from official DOT data and refreshes continuously through the day.</p>
 <p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in Wyoming.</p>
 <h2>Other Wyoming passes</h2>
-<div class="sibs"><a class="sib" href="/passes/wy/togwotee-pass/">Togwotee Pass US 26</a><a class="sib" href="/passes/wy/teton-pass/">Teton Pass WY 22</a><a class="sib" href="/passes/wy/south-pass/">South Pass WY 28</a><a class="sib" href="/passes/wy/sherman-summit/">Sherman Summit I-80</a></div>
+<div class="sibs"><a class="sib" href="/passes/wy/togwotee-pass/">Togwotee Pass US 26</a><a class="sib" href="/passes/wy/teton-pass/">Teton Pass WY 22</a><a class="sib" href="/passes/wy/south-pass/">South Pass WY 28</a><a class="sib" href="/passes/wy/powder-river-pass/">Powder River Pass US 16</a></div>
 <footer>
 <div><a href="/">Pass Checker</a> shows live conditions for 168 mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
 <div class="legal">For info only. Always verify with your local DOT before travel. &copy; 2026 Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/privacy.html">Privacy</a></div>
@@ -74,7 +74,7 @@ footer .legal{font-size:11px;margin-top:8px}
       var r = await fetch('https://pass-checker-api.onrender.com/passes/WY');
       var d = await r.json();
       if (d.data) {
-        var p = d.data.find(function (x) { return x.name === "Powder River Pass US 16"; });
+        var p = d.data.find(function (x) { return x.name === "Sherman Summit I-80"; });
         if (!p) break;
         el.textContent = p.status === 'restricted' ? 'OPEN*' : p.status.toUpperCase();
         el.className = 'status-word ' + p.status;

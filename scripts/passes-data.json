@@ -115,6 +115,16 @@
         "name": "Siskiyou Summit I-5",
         "west": "Ashland",
         "east": "California"
+      },
+      {
+        "name": "Government Camp US 26",
+        "west": "Portland",
+        "east": "Madras"
+      },
+      {
+        "name": "Bennett Pass OR 35",
+        "west": "Government Camp",
+        "east": "Hood River"
       }
     ]
   },
@@ -370,6 +380,16 @@
         "name": "Lookout Pass I-90",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Bozeman Pass I-90",
+        "west": "Bozeman",
+        "east": "Livingston"
+      },
+      {
+        "name": "Homestake Pass I-90",
+        "west": "Butte",
+        "east": "Whitehall"
       }
     ]
   },
@@ -397,6 +417,11 @@
         "name": "Powder River Pass US 16",
         "west": null,
         "east": null
+      },
+      {
+        "name": "Sherman Summit I-80",
+        "west": "Laramie",
+        "east": "Cheyenne"
       }
     ]
   },

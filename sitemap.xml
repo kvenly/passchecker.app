@@ -25,6 +25,8 @@
   <url><loc>https://passchecker.app/passes/or/willamette-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/or/deadman-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/or/siskiyou-summit/</loc></url>
+  <url><loc>https://passchecker.app/passes/or/government-camp/</loc></url>
+  <url><loc>https://passchecker.app/passes/or/bennett-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/ca/</loc></url>
   <url><loc>https://passchecker.app/passes/ca/donner-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/ca/tioga-pass/</loc></url>
@@ -74,11 +76,14 @@
   <url><loc>https://passchecker.app/passes/mt/rogers-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/mt/macdonald-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/mt/lookout-pass/</loc></url>
+  <url><loc>https://passchecker.app/passes/mt/bozeman-pass/</loc></url>
+  <url><loc>https://passchecker.app/passes/mt/homestake-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/wy/</loc></url>
   <url><loc>https://passchecker.app/passes/wy/togwotee-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/wy/teton-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/wy/south-pass/</loc></url>
   <url><loc>https://passchecker.app/passes/wy/powder-river-pass/</loc></url>
+  <url><loc>https://passchecker.app/passes/wy/sherman-summit/</loc></url>
   <url><loc>https://passchecker.app/passes/ut/</loc></url>
   <url><loc>https://passchecker.app/passes/ut/parleys-canyon/</loc></url>
   <url><loc>https://passchecker.app/passes/ut/little-cottonwood-canyon/</loc></url>
