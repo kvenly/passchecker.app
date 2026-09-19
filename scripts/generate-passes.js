@@ -16,6 +16,8 @@ const SITE = 'https://passchecker.app';
 const APP_STORE = 'https://apps.apple.com/us/app/pass-checker/id6764229547';
 const PLAY_STORE = 'https://play.google.com/store/apps/details?id=app.passchecker';
 const TOTAL = DATA.reduce((n, r) => n + r.passes.length, 0);
+// Regions with live camera feeds in the app; their pages may say 'webcams'
+const CAM_REGIONS = new Set(['WA', 'OR', 'CA', 'AK', 'ID', 'UT', 'AZ', 'NM', 'HI', 'WY', 'NV', 'MT', 'BC', 'AB', 'CO']);
 const API = 'https://pass-checker-api.onrender.com';
 
 // "Snoqualmie Pass I-90" -> "snoqualmie-pass" (route designator stripped)
@@ -133,8 +135,11 @@ function passPage(region, pass, siblings) {
   const route = routeOf(pass.name);
   const shortName = pass.name.replace(route || '', '').trim();
   const inState = region.country === 'CA' ? region.name : region.name;
-  const title = `Is ${shortName} Open? Live ${pass.name} Conditions`;
-  const desc = `Live ${shortName} road conditions: current open or closed status, summit temperature, and restrictions${route ? ` on ${route}` : ''} in ${inState}. Updated continuously from DOT data.`;
+  const hasCams = CAM_REGIONS.has(region.code);
+  const title = hasCams
+    ? `Is ${shortName} Open? Live Conditions & Webcams`
+    : `Is ${shortName} Open? Live ${pass.name} Conditions`;
+  const desc = `Live ${shortName} road conditions: current open or closed status${hasCams ? ', webcams' : ''}, summit temperature, and restrictions${route ? ` on ${route}` : ''} in ${inState}. Updated continuously from DOT data.`;
   const url = `${SITE}/passes/${region.code.toLowerCase()}/${slugify(pass.name)}/`;
 
   const corridor = pass.west && pass.east
@@ -162,6 +167,8 @@ function passPage(region, pass, siblings) {
 <a class="cta" href="${APP_STORE}">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${corridor}
+${hasCams ? `<h2>${shortName} webcams</h2>
+<p class="body-copy">Live DOT webcams at and around ${shortName} stream in the Pass Checker app, so you can see the road surface for yourself before you commit to the drive. Camera views refresh continuously from official ${inState} DOT feeds.</p>` : ''}
 <p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
 <h2>Other ${region.name} passes</h2>
 <div class="sibs">${sibLinks}</div>
