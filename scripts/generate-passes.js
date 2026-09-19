@@ -14,6 +14,8 @@ const ROOT = path.join(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(__dirname, 'passes-data.json'), 'utf8'));
 const SITE = 'https://passchecker.app';
 const APP_STORE = 'https://apps.apple.com/us/app/pass-checker/id6764229547';
+const PLAY_STORE = 'https://play.google.com/store/apps/details?id=app.passchecker';
+const TOTAL = DATA.reduce((n, r) => n + r.passes.length, 0);
 const API = 'https://pass-checker-api.onrender.com';
 
 // "Snoqualmie Pass I-90" -> "snoqualmie-pass" (route designator stripped)
@@ -158,6 +160,7 @@ function passPage(region, pass, siblings) {
   <div class="updated" id="u-val"></div>
 </div>
 <a class="cta" href="${APP_STORE}">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
+<a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${corridor}
 <p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
 <h2>Other ${region.name} passes</h2>
@@ -180,20 +183,22 @@ function statePage(region) {
 <p class="sub">${region.passes.length} passes with live conditions${region.code === 'WA' || region.code === 'BC' ? ' &middot; free in the app' : ''}</p>
 <div class="sibs">${links}</div>
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
+<a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${footer}`;
 }
 
 function indexPage(regions) {
-  const title = `Mountain Pass Conditions — 168 Passes, Live Status`;
-  const desc = `Live open/closed status for 168 mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
+  const title = `Mountain Pass Conditions — ${TOTAL} Passes, Live Status`;
+  const desc = `Live open/closed status for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
   const groups = regions
     .map(r => `<h2>${r.name}</h2><div class="sibs">${r.passes.map(p => `<a class="sib" href="/passes/${r.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>`).join('')}</div>`)
     .join('');
   return head(title, desc, `${SITE}/passes/`) + `
 <div class="crumb"><a href="/">Pass Checker</a></div>
 <h1>Live mountain pass conditions</h1>
-<p class="sub">168 passes &middot; 30 states &middot; 2 provinces</p>
+<p class="sub">${TOTAL} passes &middot; 30 states &middot; 2 provinces</p>
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
+<a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${groups}
 ${footer}`;
 }
