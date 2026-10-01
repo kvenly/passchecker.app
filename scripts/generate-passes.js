@@ -18,6 +18,30 @@ const PLAY_STORE = 'https://play.google.com/store/apps/details?id=app.passchecke
 const TOTAL = DATA.reduce((n, r) => n + r.passes.length, 0);
 // Regions with live camera feeds in the app; their pages may say 'webcams'
 const CAM_REGIONS = new Set(['WA', 'OR', 'CA', 'AK', 'ID', 'UT', 'AZ', 'NM', 'HI', 'WY', 'NV', 'MT', 'BC', 'AB', 'CO']);
+
+// Passes that close for the winter. Windows are typical patterns, not
+// promises: each agency sets the dates every year based on snowfall. Review
+// this table each autumn.
+const SEASONAL = {
+  'WA/North Cascades SR 20': { closes: 'mid-November to early December', reopens: 'April or May', note: 'WSDOT closes the highway between Ross Dam Trailhead and Silver Star gate once avalanche chutes above the road load with snow.' },
+  'WA/Chinook Pass SR 410': { closes: 'mid-November', reopens: 'late May, usually by Memorial Day weekend', note: 'WSDOT closes the pass at Crystal Mountain Boulevard on the west side and Morse Creek on the east side.' },
+  'WA/Cayuse Pass SR 410': { closes: 'mid-November to early December', reopens: 'April or May', note: 'Cayuse usually closes within days of Chinook Pass and reopens a few weeks ahead of it.' },
+  'OR/McKenzie Pass OR 242': { closes: 'early November, or sooner after the first heavy snow', reopens: 'mid-to-late June', note: 'The narrow lava-field highway is not plowed in winter. Vehicles over 35 feet are prohibited all year.' },
+  'CA/Tioga Pass CA 120': { closes: 'November, with the first significant snowfall', reopens: 'late May or June, later after heavy winters', note: 'The closure covers Tioga Road through Yosemite National Park, from Crane Flat to the Tioga Pass entrance.' },
+  'CA/Sonora Pass CA 108': { closes: 'November or December', reopens: 'May', note: 'Caltrans closes the pass east of Strawberry once snow makes the steep upper grades unsafe.' },
+  'CA/Ebbetts Pass CA 4': { closes: 'November or December', reopens: 'May or June', note: 'The closure runs from Lake Alpine to the junction with CA 89.' },
+  'CA/Monitor Pass CA 89': { closes: 'November or December', reopens: 'April, often the first Sierra pass to reopen', note: 'Monitor closes later and reopens earlier than Sonora, Ebbetts, and Tioga.' },
+  'CO/Independence Pass CO 82': { closes: 'around November 7, or earlier if snow arrives', reopens: 'the Thursday before Memorial Day', note: 'CDOT gates the highway east of Aspen and west of Twin Lakes. Vehicles over 35 feet are prohibited all year.' },
+  'CO/Trail Ridge Road US 34': { closes: 'mid-to-late October', reopens: 'late May, around Memorial Day weekend', note: 'Rocky Mountain National Park closes the road between Many Parks Curve and the Colorado River Trailhead.' },
+  'UT/Bald Mountain Pass UT 150': { closes: 'November', reopens: 'late May, around Memorial Day', note: 'The Mirror Lake Highway is not plowed over the summit in winter and becomes a snowmobile route.' },
+  'UT/Monte Cristo Summit UT 39': { closes: 'late November or December', reopens: 'May', note: 'UDOT closes UT 39 over the summit between the Ogden Valley side and Woodruff.' },
+  'AK/Hatcher Pass AK 1': { closes: 'late September or October, with the first snow', reopens: 'around July 1', note: 'The gravel road over the summit closes. The paved road to Independence Mine on the Palmer side stays open in winter.' },
+  'VT/Smugglers Notch VT 108': { closes: 'mid-October to mid-November, depending on snow', reopens: 'mid-May', note: 'The Notch section between Stowe and Jeffersonville is not plowed. Tractor trailers are prohibited all year.' },
+  'VT/Hazens Notch VT 58': { closes: 'November', reopens: 'May', note: 'The unpaved Notch section between Montgomery Center and Lowell is not maintained in winter.' },
+  'ME/Evans Notch ME 113': { closes: 'November', reopens: 'mid-May', note: 'The road through the White Mountain National Forest is gated and unplowed in winter.' },
+  'SD/Needles Highway SD 87': { closes: 'with the first snow, usually by November', reopens: 'around April 1', note: 'Custer State Park closes the highway and its narrow tunnels for the winter.' },
+  'AB/Highwood Pass Hwy 40': { closes: 'December 1', reopens: 'June 15', note: 'This closure is fixed by date every year to protect wildlife winter range, regardless of snow.' },
+};
 const API = 'https://pass-checker-api.onrender.com';
 
 // "Snoqualmie Pass I-90" -> "snoqualmie-pass" (route designator stripped)
@@ -86,7 +110,7 @@ function head(title, desc, canonical) {
 }
 
 const footer = `<footer>
-<div><a href="/">Pass Checker</a> shows live conditions for 168 mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
+<div><a href="/">Pass Checker</a> shows live conditions for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
 <div class="legal">For info only. Always verify with your local DOT before travel. &copy; ${new Date().getFullYear()} Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/privacy.html">Privacy</a></div>
 </footer>
 </body></html>`;
@@ -139,8 +163,27 @@ function passPage(region, pass, siblings) {
   const title = hasCams
     ? `Is ${shortName} Open? Live Conditions & Webcams`
     : `Is ${shortName} Open? Live ${pass.name} Conditions`;
-  const desc = `Live ${shortName} road conditions: current open or closed status${hasCams ? ', webcams' : ''}, summit temperature, and restrictions${route ? ` on ${route}` : ''} in ${inState}. Updated continuously from DOT data.`;
+  let desc = `Live ${shortName} road conditions: current open or closed status${hasCams ? ', webcams' : ''}, summit temperature, and restrictions${route ? ` on ${route}` : ''} in ${inState}. Updated continuously from DOT data.`;
   const url = `${SITE}/passes/${region.code.toLowerCase()}/${slugify(pass.name)}/`;
+  const season = SEASONAL[`${region.code}/${pass.name}`];
+  const seasonAnswer = season
+    ? `${shortName} closes every winter. Typical closing: ${season.closes}. Typical reopening: ${season.reopens}. ${season.note} Exact dates change every year, so check the live status before you go.`
+    : '';
+  if (season) desc += ` Typical winter closure: ${season.closes}.`;
+  const seasonBlock = season
+    ? `<h2>When does ${shortName} close for the winter?</h2>
+<p class="body-copy">${seasonAnswer.replace(shortName, `<strong>${shortName}</strong>`)}</p>
+<p class="body-copy">See every seasonal closure on the <a href="/passes/seasonal-closures/">winter pass closures list</a>.</p>
+<script type="application/ld+json">${JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [{
+          '@type': 'Question',
+          name: `When does ${shortName} close for the winter?`,
+          acceptedAnswer: { '@type': 'Answer', text: seasonAnswer },
+        }],
+      })}</script>`
+    : '';
 
   const corridor = pass.west && pass.east
     ? `<p class="body-copy"><strong>${shortName}</strong>${route ? ` on <strong>${route}</strong>` : ''} connects <strong>${pass.west}</strong> and <strong>${pass.east}</strong> in ${inState}. The live status above comes from official DOT data and refreshes continuously through the day.</p>`
@@ -167,6 +210,7 @@ function passPage(region, pass, siblings) {
 <a class="cta" href="${APP_STORE}">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${corridor}
+${seasonBlock}
 ${hasCams ? `<h2>${shortName} webcams</h2>
 <p class="body-copy">Live DOT webcams at and around ${shortName} stream in the Pass Checker app, so you can see the road surface for yourself before you commit to the drive. Camera views refresh continuously from official ${inState} DOT feeds.</p>` : ''}
 <p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
@@ -204,9 +248,35 @@ function indexPage(regions) {
 <div class="crumb"><a href="/">Pass Checker</a></div>
 <h1>Live mountain pass conditions</h1>
 <p class="sub">${TOTAL} passes &middot; 30 states &middot; 2 provinces</p>
+<p class="body-copy">Planning around a seasonal road? See <a href="/passes/seasonal-closures/">which passes close for the winter and when</a>.</p>
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${groups}
+${footer}`;
+}
+
+
+function seasonalPage(regions) {
+  const title = `Mountain Passes That Close for Winter: Typical Closing Dates`;
+  const desc = `Which mountain passes close for the winter and when: Independence Pass, Trail Ridge Road, Tioga, Sonora, North Cascades, Chinook, McKenzie and more, with live open or closed status.`;
+  const rows = [];
+  for (const r of regions) {
+    for (const p of r.passes) {
+      const s = SEASONAL[`${r.code}/${p.name}`];
+      if (!s) continue;
+      rows.push(`<h2><a href="/passes/${r.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>, ${r.name}</h2>
+<p class="body-copy"><strong>Typically closes:</strong> ${s.closes}<br><strong>Typically reopens:</strong> ${s.reopens}</p>
+<p class="body-copy">${s.note}</p>`);
+    }
+  }
+  return head(title, desc, `${SITE}/passes/seasonal-closures/`) + `
+<div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Passes</a></div>
+<h1>Mountain passes that close for winter</h1>
+<p class="sub">${rows.length} seasonal closures &middot; typical dates &middot; live status on each pass page</p>
+<p class="body-copy">Most mountain passes are plowed and stay open all winter. These ${rows.length} are not: each one is gated when the snow arrives and stays shut until spring. The windows below are typical patterns from past seasons. The agency that maintains each road sets the actual dates every year, so open a pass page for its live status.</p>
+<a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
+<a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
+${rows.join('\n')}
 ${footer}`;
 }
 
@@ -231,6 +301,9 @@ for (const region of DATA) {
 }
 
 fs.writeFileSync(path.join(ROOT, 'passes', 'index.html'), indexPage(DATA));
+fs.mkdirSync(path.join(ROOT, 'passes', 'seasonal-closures'), { recursive: true });
+fs.writeFileSync(path.join(ROOT, 'passes', 'seasonal-closures', 'index.html'), seasonalPage(DATA));
+urls.push(`${SITE}/passes/seasonal-closures/`);
 
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
