@@ -31,7 +31,7 @@ const SEASONAL = {
   'CA/Sonora Pass CA 108': { closes: 'November or December', reopens: 'May', note: 'Caltrans closes the pass east of Strawberry once snow makes the steep upper grades unsafe.' },
   'CA/Ebbetts Pass CA 4': { closes: 'November or December', reopens: 'May or June', note: 'The closure runs from Lake Alpine to the junction with CA 89.' },
   'CA/Monitor Pass CA 89': { closes: 'November or December', reopens: 'April, often the first Sierra pass to reopen', note: 'Monitor closes later and reopens earlier than Sonora, Ebbetts, and Tioga.' },
-  'CO/Independence Pass CO 82': { closes: 'around November 7, or earlier if snow arrives', reopens: 'the Thursday before Memorial Day', note: 'CDOT gates the highway east of Aspen and west of Twin Lakes. Vehicles over 35 feet are prohibited all year.' },
+  'CO/Independence Pass CO 82': { closes: 'early to mid November, or earlier if heavy snow arrives', reopens: 'the Thursday before Memorial Day', note: 'CDOT gates the highway east of Aspen and west of Twin Lakes. Vehicles over 35 feet are prohibited all year.' },
   'CO/Trail Ridge Road US 34': { closes: 'mid-to-late October', reopens: 'late May, around Memorial Day weekend', note: 'Rocky Mountain National Park closes the road between Many Parks Curve and the Colorado River Trailhead.' },
   'UT/Bald Mountain Pass UT 150': { closes: 'November', reopens: 'late May, around Memorial Day', note: 'The Mirror Lake Highway is not plowed over the summit in winter and becomes a snowmobile route.' },
   'UT/Monte Cristo Summit UT 39': { closes: 'late November or December', reopens: 'May', note: 'UDOT closes UT 39 over the summit between the Ogden Valley side and Woodruff.' },
