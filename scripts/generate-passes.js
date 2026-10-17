@@ -103,8 +103,19 @@ function head(title, desc, canonical) {
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="${SITE}/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="apple-itunes-app" content="app-id=6764229547">
 <link rel="icon" href="/icon.png">
 <style>${css}</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var ua = navigator.userAgent;
+  var hide = /android/i.test(ua) ? 'apps.apple.com' : /iphone|ipad|ipod/i.test(ua) ? 'play.google.com' : null;
+  if (!hide) return;
+  document.querySelectorAll('a.cta').forEach(function (a) { if (a.href.indexOf(hide) !== -1) a.style.display = 'none'; });
+});
+</script>
 </head>
 <body>`;
 }
@@ -207,7 +218,7 @@ function passPage(region, pass, siblings) {
   <div class="events" id="events" style="display:none"></div>
   <div class="updated" id="u-val"></div>
 </div>
-<a class="cta" href="${APP_STORE}">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
+<a class="cta" href="${APP_STORE}">Get live cameras and every pass on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
 ${corridor}
 ${seasonBlock}
@@ -222,7 +233,7 @@ ${widgetScript(region.code, pass.name)}
 }
 
 function statePage(region) {
-  const title = `${region.name} Mountain Pass Conditions — Live Status`;
+  const title = `${region.name} Mountain Pass Conditions: Live Status`;
   const desc = `Live open/closed status for all ${region.passes.length} ${region.name} mountain passes: ${region.passes.slice(0, 4).map(p => p.name.replace(routeOf(p.name) || '', '').trim()).join(', ')} and more.`;
   const url = `${SITE}/passes/${region.code.toLowerCase()}/`;
   const links = region.passes
@@ -239,7 +250,7 @@ ${footer}`;
 }
 
 function indexPage(regions) {
-  const title = `Mountain Pass Conditions — ${TOTAL} Passes, Live Status`;
+  const title = `Mountain Pass Conditions: ${TOTAL} Passes, Live Status`;
   const desc = `Live open/closed status for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
   const groups = regions
     .map(r => `<h2>${r.name}</h2><div class="sibs">${r.passes.map(p => `<a class="sib" href="/passes/${r.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>`).join('')}</div>`)

@@ -9,6 +9,9 @@
 <meta property="og:title" content="Is McKenzie Pass Open? Live Conditions & Webcams">
 <meta property="og:description" content="Live McKenzie Pass road conditions: current open or closed status, webcams, summit temperature, and restrictions on OR 242 in Oregon. Updated continuously from DOT data. Typical winter closure: early November, or sooner after the first heavy snow.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://passchecker.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="apple-itunes-app" content="app-id=6764229547">
 <link rel="icon" href="/icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -40,6 +43,14 @@ h2{font-size:16px;font-weight:700;margin:28px 0 12px}
 footer{border-top:1px solid var(--border);padding-top:18px;margin-top:36px;font-size:12px;color:var(--dim)}
 footer .legal{font-size:11px;margin-top:8px}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var ua = navigator.userAgent;
+  var hide = /android/i.test(ua) ? 'apps.apple.com' : /iphone|ipad|ipod/i.test(ua) ? 'play.google.com' : null;
+  if (!hide) return;
+  document.querySelectorAll('a.cta').forEach(function (a) { if (a.href.indexOf(hide) !== -1) a.style.display = 'none'; });
+});
+</script>
 </head>
 <body>
 <div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Passes</a> / <a href="/passes/or/">Oregon</a></div>
@@ -55,7 +66,7 @@ footer .legal{font-size:11px;margin-top:8px}
   <div class="events" id="events" style="display:none"></div>
   <div class="updated" id="u-val"></div>
 </div>
-<a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get live cameras &amp; alerts &mdash; Pass Checker on the App Store</a>
+<a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get live cameras and every pass on the App Store</a>
 <a class="cta" href="https://play.google.com/store/apps/details?id=app.passchecker">Get Pass Checker on Google Play</a>
 <p class="body-copy"><strong>McKenzie Pass</strong> on <strong>OR 242</strong> is one of Oregon's key mountain crossings. The live status above comes from official DOT data and refreshes continuously through the day.</p>
 <h2>When does McKenzie Pass close for the winter?</h2>
