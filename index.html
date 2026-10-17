@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pass Checker — Mountain Pass Conditions Across the US & Canada</title>
+  <title>Pass Checker: Mountain Pass Conditions Across the US & Canada</title>
   <meta name="description" content="Real-time road conditions, live DOT cameras, and summit temperatures for 173 mountain passes across 30 US states and 2 Canadian provinces. Six collectible terminal themes. Pay once." />
-  <meta property="og:title" content="Pass Checker — Mountain Pass Conditions Across the US & Canada" />
+  <meta property="og:title" content="Pass Checker: Mountain Pass Conditions Across the US & Canada" />
   <meta property="og:description" content="Real-time road conditions, live DOT cameras, and summit temperatures for 173 mountain passes across 30 US states and 2 Canadian provinces." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://passchecker.app/og-image.png" />
@@ -137,7 +137,7 @@
     .screenshots-inner h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 12px; }
     .screenshots-sub { color: var(--dim); font-size: 15px; margin-bottom: 36px; max-width: 600px; }
     .gallery { display: flex; flex-direction: column; align-items: center; gap: 22px; margin-top: 24px; }
-    /* The featured "phone" — fixed phone aspect (9:19.5), cross-fades between images */
+    /* The featured "phone": fixed phone aspect (9:19.5), cross-fades between images */
     .gallery-stage {
       position: relative;
       width: clamp(240px, 70vw, 320px);
@@ -161,7 +161,7 @@
       min-height: 1.4em; text-align: center;
       transition: opacity 0.25s ease;
     }
-    /* Thumbnail strip — small clickable previews */
+    /* Thumbnail strip: small clickable previews */
     .gallery-thumbs {
       display: flex; flex-wrap: nowrap; gap: 8px;
       overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -302,13 +302,13 @@
       <h2>Built to be glanced at, not stared at</h2>
       <p class="screenshots-sub">Every screen is information-first, with a terminal aesthetic that respects your time and your data.</p>
       <div class="gallery" id="gallery">
-        <!-- Featured "phone" — all images stacked, cross-fade between them -->
+        <!-- Featured "phone": all images stacked, cross-fade between them -->
         <div class="gallery-stage" id="gallery-stage">
-          <img src="/img/Hero.png"         alt="Snoqualmie Pass — OPEN status with summit temperature and weather alerts" data-caption="Pass conditions, glanceable" class="active" />
+          <img src="/img/Hero.png"         alt="Snoqualmie Pass OPEN status with summit temperature and weather alerts" data-caption="Pass conditions, glanceable" class="active" />
           <img src="/img/Camera.png"       alt="Live DOT camera feeds at Tinkham Road and Denny Creek on I-90" data-caption="Live DOT cameras at every pass" loading="lazy" />
-          <img src="/img/States.png"       alt="State picker — Washington marked free, US states and Canadian provinces" data-caption="30 US states · 2 Canadian provinces" loading="lazy" />
+          <img src="/img/States.png"       alt="State picker with Washington marked free, US states and Canadian provinces" data-caption="30 US states · 2 Canadian provinces" loading="lazy" />
           <img src="/img/Closed.png"       alt="Closed mountain pass with travel restrictions" data-caption="Closures, alerts, restrictions" loading="lazy" />
-          <img src="/img/Paywall.png"      alt="One-time $4.99 unlock — no subscription, no ads" data-caption="$4.99 unlocks every pass · forever" loading="lazy" />
+          <img src="/img/Paywall.png"      alt="One-time $4.99 unlock. No subscription, no ads" data-caption="$4.99 unlocks every pass · forever" loading="lazy" />
           <img src="/img/Terminal-1.png"   alt="Mt Baker in the phosphor green terminal theme" data-caption="Six collectible terminal themes" loading="lazy" />
           <img src="/img/Terminal-2.png"   alt="Pass conditions in an alternate terminal theme" data-caption="Phosphor. Amber. Glacial." loading="lazy" />
           <img src="/img/Terminal-3.png"   alt="Pass conditions in a third terminal theme" data-caption="Skeuomorphic. Paper. Plum." loading="lazy" />
@@ -359,11 +359,11 @@
         });
         wrap.addEventListener('mouseenter', () => { paused = true; });
         wrap.addEventListener('mouseleave', () => { paused = false; });
-        // Pause when tab hidden — don't burn CPU in background
+        // Pause when tab hidden; don't burn CPU in background
         document.addEventListener('visibilitychange', () => {
           if (document.hidden) stop(); else start();
         });
-        // Respect reduced motion — don't auto-advance
+        // Respect reduced motion; don't auto-advance
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         start();
       })();
@@ -379,7 +379,7 @@
         <div class="feature-card">
           <div class="feature-icon">🛣️</div>
           <h3>Live Road Conditions</h3>
-          <p>Real-time status from every state DOT and DriveBC — closures, restrictions, chain-up advisories, and weather warnings.</p>
+          <p>Real-time status from every state DOT and DriveBC: closures, restrictions, chain-up advisories, and weather warnings.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📷</div>
@@ -389,12 +389,12 @@
         <div class="feature-card">
           <div class="feature-icon">🌨️</div>
           <h3>Summit Temperatures</h3>
-          <p>Current temperatures at every summit — pulled from roadside weather stations and high-resolution forecast models where stations don't reach.</p>
+          <p>Current temperatures at every summit, pulled from roadside weather stations and high-resolution forecast models where stations don't reach.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🟢</div>
           <h3>Six Terminal Themes</h3>
-          <p>Old-school CRT phosphor vibes — green, amber, blue, pink, plum, and crisp white. Scanlines, glow, blinking cursor, the whole bit. Included with Full Access.</p>
+          <p>Old-school CRT phosphor vibes in green, amber, blue, pink, plum, and crisp white. Scanlines, glow, blinking cursor, the whole bit. Included with Full Access.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🔒</div>
@@ -415,10 +415,10 @@
     <div class="passes-inner">
       <div class="section-label">// coverage</div>
       <h2>173 passes across 30 states &amp; 2 provinces</h2>
-      <p class="passes-sub">From the Cascades to the Smokies to the Selkirks. New regions added at no extra cost — your one-time unlock covers everything we ship.</p>
+      <p class="passes-sub">From the Cascades to the Smokies to the Selkirks. New regions added at no extra cost. Your one-time unlock covers everything we ship.</p>
 
       <div class="region-group">
-        <div class="region-title"><span>🇺🇸 Washington &nbsp;<span style="color:var(--dim);font-weight:normal;">— free</span></span><span class="count">16 passes</span></div>
+        <div class="region-title"><span>🇺🇸 Washington &nbsp;<span style="color:var(--dim);font-weight:normal;">(free)</span></span><span class="count">16 passes</span></div>
         <div class="pass-list">
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Snoqualmie Pass</span></div>
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Stevens Pass</span></div>
@@ -756,7 +756,7 @@
       </div>
 
       <div class="region-group">
-        <div class="region-title"><span>🇨🇦 British Columbia &nbsp;<span style="color:var(--dim);font-weight:normal;">— free</span></span><span class="count">9 passes</span></div>
+        <div class="region-title"><span>🇨🇦 British Columbia &nbsp;<span style="color:var(--dim);font-weight:normal;">(free)</span></span><span class="count">9 passes</span></div>
         <div class="pass-list">
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Coquihalla Summit</span></div>
           <div class="pass-pill"><div class="pass-dot"></div><span class="pass-name">Allison Pass</span></div>
@@ -789,7 +789,7 @@
     <div class="cta-inner">
       <div class="section-label">// download</div>
       <h2>Ready to check the pass?</h2>
-      <p>Free on the App Store and Google Play. Washington &amp; British Columbia forever free. $4.99 unlocks everything else — no subscription, no ads, no account.</p>
+      <p>Free on the App Store and Google Play. Washington &amp; British Columbia forever free. $4.99 unlocks everything else. No subscription, no ads, no account.</p>
       <a class="btn-primary" href="https://apps.apple.com/us/app/pass-checker/id6764229547" aria-label="Download on the App Store" style="display:inline-flex; margin: 0 auto;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download on the App Store
@@ -816,7 +816,7 @@
 
   <script src="/lottie.min.js" defer></script>
   <script>
-    // Hero background animation — same Lottie file the app uses.
+    // Hero background animation: same Lottie file the app uses.
     // Honors prefers-reduced-motion (CSS hides the container) and lazy-loads
     // after first paint so it doesn't block hero text.
     (function () {
