@@ -63,7 +63,53 @@ function routeOf(name) {
 const css = `
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0a0a;--bg2:#111;--fg:#f1f3f7;--dim:#a1a6b0;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--border:#1f2937;--mono:'Courier New',monospace;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6;max-width:640px;margin:0 auto;padding:24px}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6}
+nav.top{position:fixed;top:0;left:0;right:0;background:rgba(10,10,10,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;z-index:100}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nav-logo{font-family:var(--mono);font-size:13px;font-weight:bold;color:var(--green);letter-spacing:0.04em}
+.nav-logo:hover{text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-right a{font-size:14px;color:var(--dim);transition:color 0.2s}
+.nav-right a:hover,.nav-right a.active{color:var(--fg);text-decoration:none}
+.nav-dl{background:#16a34a;color:#fff !important;padding:7px 16px;border-radius:8px;font-weight:600;font-size:13px !important}
+.nav-dl:hover{background:#15803d}
+@media (max-width:600px){.nav-right .hide-sm{display:none}.nav-right{gap:16px}}
+.page{max-width:640px;margin:0 auto;padding:84px 24px 40px}
+.page.wide{max-width:960px}
+.site-foot{background:var(--bg2);border-top:1px solid var(--border);padding:32px 24px;text-align:center;font-size:13px;color:#4b5563}
+.site-foot .fi{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:8px;align-items:center}
+.site-foot .fl{font-family:var(--mono);font-size:13px;color:var(--green);font-weight:bold;letter-spacing:0.04em;margin-bottom:4px}
+.site-foot a{color:#4b5563}
+.site-foot a:hover{color:var(--green);text-decoration:none}
+.site-foot .links{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.site-foot .legal{font-size:12px;max-width:640px;line-height:1.6}
+.hero{text-align:center;padding:48px 0 8px;position:relative}
+.hero::before{content:'';position:absolute;left:-24px;right:-24px;top:-84px;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(34,197,94,0.08) 0%,transparent 70%);pointer-events:none}
+.hero > *{position:relative}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
+.hero h1{font-size:clamp(2rem,5.5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:18px}
+.hero h1 span{color:var(--green)}
+.hero p{font-size:1.0625rem;color:var(--dim);max-width:560px;margin:0 auto;line-height:1.75}
+.stats{max-width:720px;margin:40px auto 0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:26px 0}
+.stat{text-align:center;padding:0 12px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:0}
+.stat-num{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--green);letter-spacing:-0.02em;line-height:1.1}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:0.12em;text-transform:uppercase;margin-top:6px}
+.legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.region-group{margin-top:40px}
+.region-title{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.region-title a{color:var(--green)}
+.region-title .count{color:#4b5563}
+.pass-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.pass-pill{background:#161616;border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;color:var(--dim);font-family:var(--mono);font-size:13px;transition:border-color 0.2s,color 0.2s}
+.pass-pill:hover{border-color:#16a34a;color:var(--fg);text-decoration:none}
+.pass-dot{width:7px;height:7px;border-radius:50%;background:#4b5563;flex-shrink:0}
+.pass-dot.open{background:var(--green)}.pass-dot.restricted{background:var(--yellow)}.pass-dot.closed{background:var(--red)}
+.pass-pill .pname{flex:1;min-width:0}
+.pass-pill .pst{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#4b5563}
+.pass-pill .pst.open{color:var(--green)}.pass-pill .pst.restricted{color:var(--yellow)}.pass-pill .pst.closed{color:var(--red)}
+.note-row{margin-top:40px;font-size:13px;color:var(--dim);text-align:center}
 a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
 .crumb{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:28px}
 .crumb a{color:var(--dim)}
@@ -87,11 +133,9 @@ h2{font-size:16px;font-weight:700;margin:28px 0 12px}
 .sibs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
 .sib{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 13px;font-size:13px;color:var(--fg)}
 .sib:hover{border-color:var(--green);text-decoration:none}
-footer{border-top:1px solid var(--border);padding-top:18px;margin-top:36px;font-size:12px;color:var(--dim)}
-footer .legal{font-size:11px;margin-top:8px}
 `;
 
-function head(title, desc, canonical) {
+function head(title, desc, canonical, opts = {}) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,13 +161,26 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 </head>
-<body>`;
+<body>
+<nav class="top"><div class="nav-inner">
+<a class="nav-logo" href="/">Pass Checker//</a>
+<div class="nav-right">
+<a href="/#features" class="hide-sm">Features</a>
+<a href="/passes/"${opts.active === 'status' ? ' class="active"' : ''}>Live Status</a>
+<a href="/accuracy/" class="hide-sm">Accuracy</a>
+<a href="/#passes" class="hide-sm">Coverage</a>
+<a href="${APP_STORE}" class="nav-dl">Download</a>
+</div></div></nav>
+<main class="page${opts.wide ? ' wide' : ''}">`;
 }
 
-const footer = `<footer>
-<div><a href="/">Pass Checker</a> shows live conditions for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
-<div class="legal">For info only. Always verify with your local DOT before travel. &copy; ${new Date().getFullYear()} Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/accuracy/">Accuracy report</a> &middot; <a href="/privacy.html">Privacy</a></div>
-</footer>
+const footer = `</main>
+<footer class="site-foot"><div class="fi">
+<div class="fl">Pass Checker//</div>
+<div class="links"><a href="/passes/">Live Status</a><a href="/accuracy/">Accuracy Report</a><a href="/privacy.html">Privacy Policy</a><a href="/press/">Press Kit</a><a href="https://mountainmediadigital.com">Mountain Media Digital</a></div>
+<div class="legal">Live conditions for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever. For info only; always verify with your local DOT before travel.</div>
+<div>&copy; ${new Date().getFullYear()} Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
+</div></footer>
 </body></html>`;
 
 function widgetScript(regionCode, passName) {
@@ -233,40 +290,87 @@ ${widgetScript(region.code, pass.name)}
 </body></html>`;
 }
 
+// Regions read straight from DOT feeds; their hub and index pills show live
+// status. Other regions are fetched through the paid path, so the static
+// pages leave them as plain links.
+const LIVE_REGIONS = ['WA', 'BC', 'CO', 'CA', 'UT', 'ID', 'AZ'];
+
+function pill(code, p) {
+  return `<a class="pass-pill" href="/passes/${code.toLowerCase()}/${slugify(p.name)}/" data-r="${code}" data-p="${p.name.replace(/"/g, '&quot;')}"><span class="pass-dot"></span><span class="pname">${p.name}</span><span class="pst"></span></a>`;
+}
+
+function liveDotsScript(codes) {
+  return `<script>
+(function () {
+  var API = '${API}';
+  ${JSON.stringify(codes)}.forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>`;
+}
+
 function statePage(region) {
   const title = `${region.name} Mountain Pass Conditions: Live Status`;
   const desc = `Live open/closed status for all ${region.passes.length} ${region.name} mountain passes: ${region.passes.slice(0, 4).map(p => p.name.replace(routeOf(p.name) || '', '').trim()).join(', ')} and more.`;
   const url = `${SITE}/passes/${region.code.toLowerCase()}/`;
-  const links = region.passes
-    .map(p => `<a class="sib" href="/passes/${region.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>`)
-    .join('');
-  return head(title, desc, url) + `
-<div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Passes</a></div>
+  const live = LIVE_REGIONS.includes(region.code);
+  const free = region.code === 'WA' || region.code === 'BC';
+  return head(title, desc, url, { wide: true, active: 'status' }) + `
+<div class="crumb"><a href="/">Pass Checker</a> / <a href="/passes/">Live Status</a> / ${region.name}</div>
+<div class="hero">
+<div class="eyebrow">// ${region.name}${free ? ' &middot; free in the app' : ''}</div>
 <h1>${region.name} mountain passes</h1>
-<p class="sub">${region.passes.length} passes with live conditions${region.code === 'WA' || region.code === 'BC' ? ' &middot; free in the app' : ''}</p>
-<div class="sibs">${links}</div>
+<p>${region.passes.length} passes with live conditions from official ${region.country === 'CA' ? 'provincial' : 'state'} transportation data.${live ? ' Status below updates live.' : ' Open a pass for its live status.'}</p>
+</div>
+<div class="region-group"><div class="pass-list">${region.passes.map(p => pill(region.code, p)).join('')}</div></div>
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
-${footer}`;
+${footer.replace('</body></html>', '')}
+${live ? liveDotsScript([region.code]) : ''}
+</body></html>`;
 }
 
 function indexPage(regions) {
   const title = `Mountain Pass Conditions: ${TOTAL} Passes, Live Status`;
   const desc = `Live open/closed status for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. From Snoqualmie to the Coquihalla to Newfound Gap.`;
-  const groups = regions
-    .map(r => `<h2>${r.name}</h2><div class="sibs">${r.passes.map(p => `<a class="sib" href="/passes/${r.code.toLowerCase()}/${slugify(p.name)}/">${p.name}</a>`).join('')}</div>`)
-    .join('');
-  return head(title, desc, `${SITE}/passes/`) + `
-<div class="crumb"><a href="/">Pass Checker</a></div>
-<h1>Live mountain pass conditions</h1>
-<p class="sub">${TOTAL} passes &middot; 30 states &middot; 2 provinces</p>
-<p class="body-copy">Planning around a seasonal road? See <a href="/passes/seasonal-closures/">which passes close for the winter and when</a>.</p>
+  const flag = r => (r.country === 'CA' ? '\u{1F1E8}\u{1F1E6}' : '\u{1F1FA}\u{1F1F8}');
+  const groups = regions.map(r => `<div class="region-group">
+<div class="region-title"><a href="/passes/${r.code.toLowerCase()}/">${flag(r)} ${r.name}${r.code === 'WA' || r.code === 'BC' ? ' (free)' : ''}</a><span class="count">${r.passes.length} pass${r.passes.length === 1 ? '' : 'es'}</span></div>
+<div class="pass-list">${r.passes.map(p => pill(r.code, p)).join('')}</div>
+</div>`).join('');
+  return head(title, desc, `${SITE}/passes/`, { wide: true, active: 'status' }) + `
+<div class="hero">
+<div class="eyebrow">// live status</div>
+<h1>Every pass.<br><span>Live.</span></h1>
+<p>Open, restricted or closed for ${TOTAL} mountain passes, straight from official DOT data. Tap any pass for temperature, restrictions and its live page.</p>
+<div class="stats">
+<div class="stat"><div class="stat-num">${TOTAL}</div><div class="stat-label">Mountain passes</div></div>
+<div class="stat"><div class="stat-num">32</div><div class="stat-label">States and provinces</div></div>
+<div class="stat"><div class="stat-num">Hourly</div><div class="stat-label"><a href="/accuracy/">Accuracy checks</a></div></div>
+</div>
+<div class="legend"><span><span class="pass-dot open"></span>Open</span><span><span class="pass-dot restricted"></span>Open, restrictions</span><span><span class="pass-dot closed"></span>Closed</span><span><span class="pass-dot"></span>Open the pass to check</span></div>
+</div>
+<p class="note-row">Planning around a seasonal road? See <a href="/passes/seasonal-closures/">which passes close for the winter and when</a>.</p>
+${groups}
 <a class="cta" href="${APP_STORE}">Get Pass Checker on the App Store</a>
 <a class="cta" href="${PLAY_STORE}">Get Pass Checker on Google Play</a>
-${groups}
-${footer}`;
+${footer.replace('</body></html>', '')}
+${liveDotsScript(LIVE_REGIONS)}
+</body></html>`;
 }
-
 
 function seasonalPage(regions) {
   const title = `Mountain Passes That Close for Winter: Typical Closing Dates`;
