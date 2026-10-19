@@ -1,77 +1,239 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pass Checker Accuracy Report: Live Checks Against Official DOT Data</title>
-<meta name="description" content="Every hour, Pass Checker checks the open, restricted or closed status it shows against each state's official transportation feed. See the match rate, every mismatch, and how fresh the data is.">
-<link rel="canonical" href="https://passchecker.app/accuracy/">
-<meta property="og:title" content="Pass Checker Accuracy Report">
-<meta property="og:description" content="Hourly checks of Pass Checker against official DOT data, with every mismatch listed.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://passchecker.app/og-image.png">
-<meta name="apple-itunes-app" content="app-id=6764229547">
-<link rel="icon" href="/icon.png">
-<style>
-  :root { --bg:#05070a; --surface:#0d1016; --border:#1d2330; --fg:#f1f3f7; --dim:#a1a6b0; --green:#22c55e; --yellow:#f59e0b; --red:#ef4444; --mono:'Courier New',monospace; --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.5; padding: 28px 20px 60px; max-width: 980px; margin: 0 auto; }
-  .crumb { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); margin-bottom: 18px; }
-  .crumb a { color: var(--dim); text-decoration: none; }
-  a { color: var(--green); }
-  footer { border-top: 1px solid var(--border); margin-top: 40px; padding-top: 18px; font-size: 12px; color: var(--dim); }
-  .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); }
-  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin: 6px 0 8px; }
-  .lede { color: var(--dim); font-size: 15px; max-width: 700px; }
-  .bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 18px 0 22px; font-size: 13px; color: var(--dim); }
-  button { background: transparent; color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px; font: inherit; cursor: pointer; }
-  button:hover { border-color: var(--green); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
-  .card .code { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: var(--dim); }
-  .card .name { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
-  .card .pct { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
-  .card .sub { font-size: 12px; color: var(--dim); }
-  .good { color: var(--green); } .warn { color: var(--yellow); } .bad { color: var(--red); }
-  h2 { font-size: 18px; margin: 30px 0 10px; }
-  .note { font-size: 13px; color: var(--dim); margin-bottom: 10px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); font-weight: 400; padding: 8px 8px; border-bottom: 1px solid var(--border); }
-  td { padding: 8px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  .st { font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
-  .st.open { color: var(--green); } .st.restricted { color: var(--yellow); } .st.closed { color: var(--red); }
-  .wrap { overflow-x: auto; }
-  .empty { color: var(--dim); font-size: 14px; padding: 16px 0; }
-  details { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
-  summary { cursor: pointer; padding: 12px 16px; font-weight: 700; }
-  details .wrap { padding: 0 8px 10px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pass Checker Accuracy Report: Live Checks Against Official DOT Data</title>
+  <meta name="description" content="Every hour, Pass Checker checks the open, restricted or closed status it shows against each state's official transportation feed. See the match rate, every mismatch, and how fresh the data is." />
+  <link rel="canonical" href="https://passchecker.app/accuracy/" />
+  <meta property="og:title" content="Pass Checker Accuracy Report" />
+  <meta property="og:description" content="Hourly checks of Pass Checker against official DOT data, with every mismatch listed." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://passchecker.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="apple-itunes-app" content="app-id=6764229547" />
+  <link rel="icon" href="/icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --bg2:      #111111;
+      --bg3:      #161616;
+      --fg:       #f1f3f7;
+      --dim:      #a1a6b0;
+      --dimmer:   #4b5563;
+      --green:    #22c55e;
+      --green2:   #16a34a;
+      --yellow:   #f59e0b;
+      --red:      #ef4444;
+      --border:   #1f2937;
+      --mono:     'Courier New', Courier, monospace;
+      --sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; }
+
+    /* ── NAV (matches homepage) ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; z-index: 100;
+    }
+    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+    .nav-logo { font-family: var(--mono); font-size: 13px; font-weight: bold; color: var(--green); letter-spacing: 0.04em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-right a { font-size: 14px; color: var(--dim); text-decoration: none; transition: color 0.2s; }
+    .nav-right a:hover, .nav-right a.active { color: var(--fg); }
+    .nav-dl { background: var(--green2); color: #fff !important; padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 13px !important; transition: background 0.2s !important; }
+    .nav-dl:hover { background: #15803d !important; }
+    @media (max-width: 600px) { .nav-right .hide-sm { display: none; } .nav-right { gap: 16px; } }
+
+    /* ── HERO ── */
+    .hero { padding: 132px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(34,197,94,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero > * { position: relative; }
+    .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(2rem, 5.5vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+    .hero h1 span { color: var(--green); }
+    .hero p { font-size: 1.0625rem; color: var(--dim); max-width: 560px; margin: 0 auto; line-height: 1.75; }
+
+    .stats { max-width: 720px; margin: 44px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 0; }
+    .stat { text-align: center; padding: 0 16px; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: 0; }
+    .stat-num { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--green); letter-spacing: -0.02em; line-height: 1.1; }
+    .stat-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
+    .hero-sub { margin-top: 24px; font-family: var(--mono); font-size: 12px; color: var(--dimmer); letter-spacing: 0.06em; }
+    .hero-sub button { margin-left: 10px; }
+
+    button { background: transparent; color: var(--dim); border: 1px solid var(--border); border-radius: 10px; padding: 7px 14px; font: 13px var(--sans); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    button:hover { border-color: var(--green2); color: var(--fg); }
+    button:disabled { opacity: 0.6; cursor: default; }
+
+    /* ── SECTIONS ── */
+    section { padding: 72px 24px; }
+    section.alt { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .inner { max-width: 960px; margin: 0 auto; }
+    .section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .sub { font-size: 15px; color: var(--dim); margin-bottom: 32px; max-width: 620px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+    .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 22px; transition: border-color 0.2s; }
+    section.alt .card { background: var(--bg3); }
+    .card:hover { border-color: var(--green2); }
+    .card .code { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--dimmer); }
+    .card .name { font-weight: 700; font-size: 16px; margin: 2px 0 8px; }
+    .card .pct { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+    .card .line { font-size: 13px; color: var(--dim); line-height: 1.5; }
+    .good { color: var(--green); } .warn { color: var(--yellow); } .bad { color: var(--red); } .none { color: var(--dimmer); }
+
+    details { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    summary { cursor: pointer; padding: 14px 18px; font-weight: 700; font-size: 15px; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; font-family: var(--mono); color: var(--dimmer); }
+    details[open] summary::after { content: '\2212'; }
+    summary .meta { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--dim); margin-left: auto; white-space: nowrap; }
+    .wrap { overflow-x: auto; }
+    details .wrap { padding: 0 10px 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dimmer); font-weight: 400; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+    td { padding: 9px 8px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--dim); }
+    td:first-child { color: var(--fg); }
+    tr:last-child td { border-bottom: 0; }
+    .st { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .st.open { color: var(--green); } .st.restricted { color: var(--yellow); } .st.closed { color: var(--red); }
+    .empty { color: var(--dim); font-size: 15px; padding: 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; }
+
+    .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .how .card { padding: 28px; }
+    .how .icon { width: 40px; height: 40px; background: rgba(34,197,94,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 18px; }
+    .how h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .how p { font-size: 14px; color: var(--dim); line-height: 1.7; }
+    .coverage { margin-top: 28px; font-size: 14px; color: var(--dim); line-height: 1.7; max-width: 760px; }
+
+    /* ── DOWNLOAD CTA (matches homepage) ── */
+    #download { padding: 88px 24px; text-align: center; position: relative; overflow: hidden; }
+    #download::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(34,197,94,0.06) 0%, transparent 70%); pointer-events: none; }
+    .cta-inner { max-width: 520px; margin: 0 auto; position: relative; }
+    #download h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 14px; }
+    #download p { font-size: 1.0625rem; color: var(--dim); margin-bottom: 32px; line-height: 1.75; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--fg); color: var(--bg); padding: 14px 28px; border-radius: 14px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.15s, background 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); background: #e5e7eb; }
+    .btn-primary svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    /* ── FOOTER (matches homepage) ── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 13px; color: var(--dimmer); }
+    .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .footer-logo { font-family: var(--mono); font-size: 13px; color: var(--green); font-weight: bold; letter-spacing: 0.04em; margin-bottom: 4px; }
+    footer a { color: var(--dimmer); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--green); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+  </style>
 </head>
 <body>
-  <div class="crumb"><a href="/">Pass Checker</a> / Accuracy</div>
-  <h1>Accuracy report</h1>
-  <p class="lede">Every hour, Pass Checker compares what the app is showing for each pass against a fresh read of that state's official transportation feed. A match means the app showed the same open, restricted or closed status as the DOT at that moment.</p>
 
-  <div class="bar">
-    <span id="summary">Loading&hellip;</span>
-    <button id="run">Run a check now</button>
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="/">Pass Checker//</a>
+      <div class="nav-right">
+        <a href="/#features" class="hide-sm">Features</a>
+        <a href="/passes/" class="hide-sm">Live Status</a>
+        <a href="/accuracy/" class="active">Accuracy</a>
+        <a href="/#passes" class="hide-sm">Coverage</a>
+        <a href="https://apps.apple.com/us/app/pass-checker/id6764229547" class="nav-dl">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">// accuracy report</div>
+    <h1>Checked against the DOT.<br><span>Every hour.</span></h1>
+    <p>Every hour, Pass Checker reads each state's official transportation feed and compares it with the open, restricted or closed status the app was showing at that moment. Every result is published here, including every miss.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="s-pct">&hellip;</div><div class="stat-label">Statuses matched</div></div>
+      <div class="stat"><div class="stat-num" id="s-checks">&hellip;</div><div class="stat-label">Pass checks, 30 days</div></div>
+      <div class="stat"><div class="stat-num" id="s-age">&hellip;</div><div class="stat-label">Avg data age</div></div>
+    </div>
+    <div class="hero-sub"><span id="summary">Loading&hellip;</span><button id="run">Run a check now</button></div>
   </div>
 
-  <div class="grid" id="cards"></div>
+  <section class="alt">
+    <div class="inner">
+      <div class="section-label">// by region</div>
+      <h2>Match rate, last 30 days</h2>
+      <p class="sub">A match means the app showed the same status as the official feed at the moment of the check.</p>
+      <div class="grid" id="cards"></div>
+    </div>
+  </section>
 
-  <h2>Latest check, pass by pass</h2>
-  <p class="note" id="latest-note"></p>
-  <div id="latest"></div>
+  <section>
+    <div class="inner">
+      <div class="section-label">// latest check</div>
+      <h2>Pass by pass</h2>
+      <p class="sub" id="latest-note">"App" is what users were seeing at that moment. "DOT" is the official feed.</p>
+      <div id="latest"></div>
+    </div>
+  </section>
 
-  <h2>Every mismatch, last 30 days</h2>
-  <p class="note">Each row is an hourly check where the app and the DOT disagreed.</p>
-  <div class="wrap"><table id="misses"></table></div>
+  <section class="alt">
+    <div class="inner">
+      <div class="section-label">// every mismatch</div>
+      <h2>Where we were wrong</h2>
+      <p class="sub">Every hourly check where the app and the DOT disagreed in the last 30 days. Nothing is left out.</p>
+      <div class="wrap" id="misses"></div>
+    </div>
+  </section>
 
-  <h2>How the check works</h2>
-  <p class="note">At 7 minutes past every hour, Pass Checker reads each region's official feed fresh and compares it with the status the app was showing at that same moment. If they differ, it is a mismatch and it is listed above, with no exceptions. Pass data in these regions refreshes every 10 minutes, so most mismatches are a road that changed status in the minutes before the check.</p>
+  <section>
+    <div class="inner">
+      <div class="section-label">// how it works</div>
+      <h2>How the check works</h2>
+      <p class="sub">The same data you see in the app, checked against the source, on a schedule nobody touches.</p>
+      <div class="how">
+        <div class="card"><div class="icon">&#9201;</div><h3>Hourly, automatic</h3><p>At 7 minutes past every hour, Pass Checker reads each region's official feed fresh and compares it with what the app was serving at that exact moment.</p></div>
+        <div class="card"><div class="icon">&#128203;</div><h3>Every miss is listed</h3><p>If the app and the DOT disagree, it is a mismatch and it appears on this page with the date, the pass, and both statuses. No exceptions.</p></div>
+        <div class="card"><div class="icon">&#128260;</div><h3>Refreshed every 10 minutes</h3><p>Pass data in these regions refreshes every 10 minutes, so most mismatches are a road that changed status in the minutes before a check.</p></div>
+      </div>
+      <p class="coverage">This report covers the seven regions whose feeds Pass Checker reads directly: Washington (WSDOT), British Columbia (DriveBC), Colorado (CDOT), California (Caltrans), Utah (UDOT), Idaho (Idaho 511) and Arizona (AZ511). Other regions are not included. Pass Checker can only be as current as the DOT itself, so always confirm with the official source before you travel.</p>
+    </div>
+  </section>
 
-  <h2>What this covers</h2>
-  <p class="note">These seven regions publish feeds Pass Checker reads directly, so they can be checked automatically: Washington (WSDOT), British Columbia (DriveBC), Colorado (CDOT), California (Caltrans), Utah (UDOT), Idaho (Idaho 511) and Arizona (AZ511). Other regions are not included in this report. Pass Checker can only be as current as the DOT itself; always confirm with the official source before you travel.</p>
+  <section id="download" class="alt">
+    <div class="cta-inner">
+      <div class="section-label">// download</div>
+      <h2>Check the pass before you go.</h2>
+      <p>Free on the App Store and Google Play. Washington &amp; British Columbia forever free. $4.99 unlocks everything else. No subscription, no ads, no account.</p>
+      <div class="cta-buttons">
+        <a class="btn-primary" href="https://apps.apple.com/us/app/pass-checker/id6764229547">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a class="btn-primary" href="https://play.google.com/store/apps/details?id=app.passchecker">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zM17 15.5l-3.3-3.3v-.2L17 8.7l.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3L17.1 15.4l-.1.1zM16 16.4L12.6 13 3.9 21.7c.4.4 1 .4 1.7 0l10.4-5.3zM16 7.8L5.6 2.5c-.7-.4-1.3-.3-1.7 0L12.6 11 16 7.8z"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Pass Checker//</div>
+      <div class="footer-links">
+        <a href="/passes/">Live Status</a>
+        <a href="/accuracy/">Accuracy Report</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/press/">Press Kit</a>
+        <a href="https://mountainmediadigital.com">Mountain Media Digital</a>
+      </div>
+      <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
+    </div>
+  </footer>
 
 <script>
 const API = 'https://pass-checker-api.onrender.com';
@@ -79,47 +241,60 @@ const NAMES = { WA: 'Washington', BC: 'British Columbia', CO: 'Colorado', CA: 'C
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmt = t => new Date(t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 const cls = pct => pct >= 99 ? 'good' : pct >= 95 ? 'warn' : 'bad';
+const pctText = p => p === 100 ? '100%' : p.toFixed(1) + '%';
 const st = s => s ? `<span class="st ${esc(s)}">${esc(s)}</span>` : '<span class="st">n/a</span>';
+const $ = id => document.getElementById(id);
 
 async function load() {
   const r = await fetch(API + '/accuracy/data', { cache: 'no-store' });
-  if (!r.ok) { document.getElementById('summary').textContent = 'Could not load data.'; return; }
+  if (!r.ok) throw new Error('load failed');
   const { regions, runs } = await r.json();
   const since = Date.now() - 30 * 24 * 3600 * 1000;
   const recent = runs.filter(x => x.t >= since);
 
-  document.getElementById('summary').textContent = recent.length
-    ? `${recent.length} hourly check${recent.length === 1 ? '' : 's'} since ${fmt(recent[recent.length - 1].t)}. Last check ${fmt(recent[0].t)}.`
-    : 'No checks yet. Run one now.';
-
-  document.getElementById('cards').innerHTML = regions.map(code => {
-    let n = 0, m = 0, runsCounted = 0, ages = [];
+  let N = 0, M = 0; const allAges = [];
+  const perRegion = {};
+  for (const code of regions) {
+    let n = 0, m = 0, hours = 0; const ages = [];
     for (const run of recent) {
       const g = run.regions[code];
       if (!g || g.error || !g.n) continue;
-      n += g.n; m += g.m; runsCounted++;
+      n += g.n; m += g.m; hours++;
       if (g.age != null) ages.push(g.age);
     }
-    const pct = n ? (m / n) * 100 : null;
-    const avgAge = ages.length ? Math.round(ages.reduce((a, b) => a + b, 0) / ages.length) : null;
+    N += n; M += m; allAges.push(...ages);
+    perRegion[code] = { n, m, hours, age: ages.length ? Math.round(ages.reduce((a, b) => a + b, 0) / ages.length) : null };
+  }
+
+  $('s-pct').textContent = N ? pctText((M / N) * 100) : 'n/a';
+  $('s-pct').className = 'stat-num ' + (N ? cls((M / N) * 100) : '');
+  $('s-checks').textContent = N ? N.toLocaleString() : 'n/a';
+  $('s-age').textContent = allAges.length ? Math.round(allAges.reduce((a, b) => a + b, 0) / allAges.length) + ' min' : 'n/a';
+  $('summary').textContent = recent.length
+    ? `${recent.length} hourly check${recent.length === 1 ? '' : 's'} since ${fmt(recent[recent.length - 1].t)} · last check ${fmt(recent[0].t)}`
+    : 'No checks yet';
+
+  $('cards').innerHTML = regions.map(code => {
+    const x = perRegion[code];
+    const p = x.n ? (x.m / x.n) * 100 : null;
     return `<div class="card"><div class="code">${code}</div><div class="name">${NAMES[code] || code}</div>
-      <div class="pct ${pct == null ? '' : cls(pct)}">${pct == null ? '&ndash;' : pct.toFixed(pct === 100 ? 0 : 1) + '%'}</div>
-      <div class="sub">${n ? `${m.toLocaleString()} of ${n.toLocaleString()} pass checks matched` : 'No checks yet'}${runsCounted ? ` across ${runsCounted} hour${runsCounted === 1 ? '' : 's'}` : ''}</div>
-      <div class="sub">${avgAge != null ? `App data was ${avgAge} min old on average` : ''}</div></div>`;
+      <div class="pct ${p == null ? 'none' : cls(p)}">${p == null ? 'n/a' : pctText(p)}</div>
+      <div class="line">${x.n ? `${x.m.toLocaleString()} of ${x.n.toLocaleString()} pass checks matched over ${x.hours} hour${x.hours === 1 ? '' : 's'}` : 'No checks yet'}</div>
+      ${x.age != null ? `<div class="line">Data ${x.age} min old on average</div>` : ''}</div>`;
   }).join('');
 
   const latest = runs[0];
-  const latestEl = document.getElementById('latest');
-  if (!latest) { latestEl.innerHTML = '<p class="empty">No checks yet.</p>'; }
+  if (!latest) { $('latest').innerHTML = '<div class="empty">No checks yet.</div>'; }
   else {
-    document.getElementById('latest-note').textContent = `Checked ${fmt(latest.t)}. "App" is what users were seeing at that moment; "DOT" is the official feed.`;
-    latestEl.innerHTML = regions.map(code => {
+    $('latest-note').textContent = `Checked ${fmt(latest.t)}. "App" is what users were seeing at that moment. "DOT" is the official feed. Open a region to see every pass.`;
+    $('latest').innerHTML = regions.map(code => {
       const g = latest.regions[code];
       if (!g) return '';
-      if (g.error) return `<details><summary>${NAMES[code]}: check failed</summary><div class="wrap"><p class="note">${esc(g.error)}</p></div></details>`;
-      const rows = (g.passes || []).map(x => `<tr><td>${esc(x.p)}</td><td>${st(x.app)}</td><td>${st(x.dot)}</td><td>${x.app == null ? 'not yet loaded' : x.app === x.dot ? '<span class="good">match</span>' : '<span class="bad">mismatch</span>'}</td></tr>`).join('');
-      return `<details ${g.miss && g.miss.length ? 'open' : ''}><summary>${NAMES[code]}: ${g.n ? `${g.m} of ${g.n} matched` : 'not compared (server had just restarted)'}${g.age != null ? `, data ${g.age} min old` : ''}</summary>
-        <div class="wrap"><table><tr><th>Pass</th><th>App</th><th>DOT</th><th></th></tr>${rows}</table></div></details>`;
+      if (g.error) return `<details><summary>${NAMES[code]}<span class="meta bad">check failed</span></summary><div class="wrap"><p class="sub">${esc(g.error)}</p></div></details>`;
+      const meta = g.n ? `<span class="${g.m === g.n ? 'good' : 'bad'}">${g.m} of ${g.n} matched</span>${g.age != null ? ` · data ${g.age} min old` : ''}` : 'not compared, server had just restarted';
+      const rows = (g.passes || []).map(x => `<tr><td>${esc(x.p)}</td><td>${st(x.app)}</td><td>${st(x.dot)}</td><td>${x.app == null ? 'not loaded' : x.app === x.dot ? '<span class="good">match</span>' : '<span class="bad">mismatch</span>'}</td></tr>`).join('');
+      return `<details ${g.miss && g.miss.length ? 'open' : ''}><summary>${NAMES[code]}<span class="meta">${meta}</span></summary>
+        <div class="wrap"><table><tr><th>Pass</th><th>App</th><th>DOT</th><th>Result</th></tr>${rows}</table></div></details>`;
     }).join('');
   }
 
@@ -128,29 +303,25 @@ async function load() {
     const g = run.regions[code];
     if (g && g.miss) for (const x of g.miss) misses.push({ t: run.t, code, ...x });
   }
-  document.getElementById('misses').innerHTML = misses.length
-    ? '<tr><th>When</th><th>Region</th><th>Pass</th><th>App showed</th><th>DOT showed</th></tr>' +
-      misses.map(x => `<tr><td>${fmt(x.t)}</td><td>${x.code}</td><td>${esc(x.p)}</td><td>${st(x.app)}</td><td>${st(x.dot)}</td></tr>`).join('')
-    : '<tr><td class="empty">No mismatches recorded.</td></tr>';
+  $('misses').innerHTML = misses.length
+    ? '<table><tr><th>When</th><th>Region</th><th>Pass</th><th>App showed</th><th>DOT showed</th></tr>' +
+      misses.map(x => `<tr><td>${fmt(x.t)}</td><td>${NAMES[x.code] || x.code}</td><td>${esc(x.p)}</td><td>${st(x.app)}</td><td>${st(x.dot)}</td></tr>`).join('') + '</table>'
+    : '<div class="empty">No mismatches recorded in the last 30 days.</div>';
 }
 
-document.getElementById('run').onclick = async () => {
-  const b = document.getElementById('run');
+$('run').onclick = async () => {
+  const b = $('run');
   b.disabled = true; b.textContent = 'Checking…';
   try {
     const r = await (await fetch(API + '/accuracy/run', { method: 'POST' })).json();
-    b.textContent = r.skipped ? 'Already checked in the last 5 minutes' : 'Done';
+    b.textContent = r.skipped ? 'Already checked in the last 5 min' : 'Done';
   } catch { b.textContent = 'Check failed'; }
-  await load();
+  await load().catch(() => {});
   setTimeout(() => { b.disabled = false; b.textContent = 'Run a check now'; }, 4000);
 };
 
-load().catch(() => { document.getElementById('summary').textContent = 'Could not load data.'; });
+load().catch(() => { $('summary').textContent = 'Could not load the report. Try again in a minute.'; });
 setInterval(() => load().catch(() => {}), 5 * 60 * 1000);
 </script>
-  <footer>
-    <div><a href="/">Pass Checker</a> &middot; <a href="/passes/">Live pass status</a> &middot; <a href="/press/">Press kit</a> &middot; <a href="/privacy.html">Privacy</a></div>
-    <div style="margin-top:6px">For info only. Always verify with your local DOT before travel. &copy; 2026 Mountain Media Digital LLC. Not affiliated with any government agency.</div>
-  </footer>
 </body>
 </html>
