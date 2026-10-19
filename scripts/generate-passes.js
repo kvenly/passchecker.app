@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const footer = `<footer>
 <div><a href="/">Pass Checker</a> shows live conditions for ${TOTAL} mountain passes across 30 US states and 2 Canadian provinces. Washington and British Columbia are free forever.</div>
-<div class="legal">For info only. Always verify with your local DOT before travel. &copy; ${new Date().getFullYear()} Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/privacy.html">Privacy</a></div>
+<div class="legal">For info only. Always verify with your local DOT before travel. &copy; ${new Date().getFullYear()} Mountain Media Digital LLC. Not affiliated with any government agency. <a href="/accuracy/">Accuracy report</a> &middot; <a href="/privacy.html">Privacy</a></div>
 </footer>
 </body></html>`;
 
@@ -224,6 +224,7 @@ ${corridor}
 ${seasonBlock}
 ${hasCams ? `<h2>${shortName} webcams</h2>
 <p class="body-copy">Live DOT webcams at and around ${shortName} stream in the Pass Checker app, so you can see the road surface for yourself before you commit to the drive. Camera views refresh continuously from official ${inState} DOT feeds.</p>` : ''}
+<p class="body-copy">Pass Checker checks its own status against official DOT data every hour. See the <a href="/accuracy/">live accuracy report</a>.</p>
 <p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
 <h2>Other ${region.name} passes</h2>
 <div class="sibs">${sibLinks}</div>
@@ -315,6 +316,7 @@ fs.writeFileSync(path.join(ROOT, 'passes', 'index.html'), indexPage(DATA));
 fs.mkdirSync(path.join(ROOT, 'passes', 'seasonal-closures'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'passes', 'seasonal-closures', 'index.html'), seasonalPage(DATA));
 urls.push(`${SITE}/passes/seasonal-closures/`);
+urls.push(`${SITE}/accuracy/`);
 
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
