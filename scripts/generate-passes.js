@@ -18,6 +18,18 @@ const PLAY_STORE = 'https://play.google.com/store/apps/details?id=app.passchecke
 const TOTAL = DATA.reduce((n, r) => n + r.passes.length, 0);
 // Regions with live camera feeds in the app; their pages may say 'webcams'
 const CAM_REGIONS = new Set(['WA', 'OR', 'CA', 'AK', 'ID', 'UT', 'AZ', 'NM', 'HI', 'WY', 'NV', 'MT', 'BC', 'AB', 'CO']);
+// Passes in those regions that have no camera in the app (mirrors the empty
+// camera lists in the app's index.html). Their pages must not promise webcams.
+const NO_CAM_PASSES = new Set([
+  'WA/Mt Baker SR 542', 'WA/Cayuse Pass SR 410', 'WA/Chinook Pass SR 410',
+  'CA/Tioga Pass CA 120', 'CA/Monitor Pass CA 89', 'CA/Sonora Pass CA 108',
+  'AK/Isabel Pass Richardson Hwy', 'AK/White Pass South Klondike Hwy',
+  'ID/Fourth of July Pass I-90', 'ID/Galena Summit ID 75',
+  'AZ/Mingus Mountain AZ 89A', 'AZ/Sitgreaves Pass AZ 66',
+  'HI/Mauna Kea Access Road HI 200', 'HI/Saddle Road HI 200',
+  'OR/McKenzie Pass OR 242',
+  'CO/Tennessee Pass US 24', 'CO/Lizard Head Pass CO 145', 'CO/Trail Ridge Road US 34', 'CO/Rabbit Ears Pass US 40',
+]);
 
 // Passes that close for the winter. Windows are typical patterns, not
 // promises: each agency sets the dates every year based on snowfall. Review
@@ -227,7 +239,7 @@ function passPage(region, pass, siblings) {
   const route = routeOf(pass.name);
   const shortName = pass.name.replace(route || '', '').trim();
   const inState = region.country === 'CA' ? region.name : region.name;
-  const hasCams = CAM_REGIONS.has(region.code);
+  const hasCams = CAM_REGIONS.has(region.code) && !NO_CAM_PASSES.has(`${region.code}/${pass.name}`);
   const title = hasCams
     ? `Is ${shortName} Open? Live Conditions & Webcams`
     : `Is ${shortName} Open? Live ${pass.name} Conditions`;
@@ -282,7 +294,7 @@ ${seasonBlock}
 ${hasCams ? `<h2>${shortName} webcams</h2>
 <p class="body-copy">Live DOT webcams at and around ${shortName} stream in the Pass Checker app, so you can see the road surface for yourself before you commit to the drive. Camera views refresh continuously from official ${inState} DOT feeds.</p>` : ''}
 <p class="body-copy">Pass Checker checks its own status against official DOT data every hour. See the <a href="/accuracy/">live accuracy report</a>.</p>
-<p class="body-copy">The Pass Checker app adds live DOT camera feeds, summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
+<p class="body-copy">The Pass Checker app adds ${hasCams ? 'live DOT camera feeds, ' : ''}summit temperatures from roadside weather stations, chain law and restriction details, and every other pass in ${region.name}${region.code === 'WA' || region.code === 'BC' ? ' free of charge' : ''}.</p>
 <h2>Other ${region.name} passes</h2>
 <div class="sibs">${sibLinks}</div>
 ${footer.replace('</body></html>', '')}
