@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="hero">
 <div class="eyebrow">// Oregon</div>
 <h1>Oregon mountain passes</h1>
-<p>7 passes with live conditions from official state transportation data. Open a pass for its live status.</p>
+<p>7 passes with live conditions from official state transportation data. Status below updates live.</p>
 </div>
 <div class="region-group"><div class="pass-list"><a class="pass-pill" href="/passes/or/santiam-pass/" data-r="OR" data-p="Santiam Pass US 20"><span class="pass-dot"></span><span class="pname">Santiam Pass US 20</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/mckenzie-pass/" data-r="OR" data-p="McKenzie Pass OR 242"><span class="pass-dot"></span><span class="pname">McKenzie Pass OR 242</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/willamette-pass/" data-r="OR" data-p="Willamette Pass OR 58"><span class="pass-dot"></span><span class="pname">Willamette Pass OR 58</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/deadman-pass/" data-r="OR" data-p="Deadman Pass I-84"><span class="pass-dot"></span><span class="pname">Deadman Pass I-84</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/siskiyou-summit/" data-r="OR" data-p="Siskiyou Summit I-5"><span class="pass-dot"></span><span class="pname">Siskiyou Summit I-5</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/government-camp/" data-r="OR" data-p="Government Camp US 26"><span class="pass-dot"></span><span class="pname">Government Camp US 26</span><span class="pst"></span></a><a class="pass-pill" href="/passes/or/bennett-pass/" data-r="OR" data-p="Bennett Pass OR 35"><span class="pass-dot"></span><span class="pname">Bennett Pass OR 35</span><span class="pst"></span></a></div></div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get Pass Checker on the App Store</a>
@@ -124,5 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
 <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
 </div></footer>
 
-
+<script>
+(function () {
+  var API = 'https://pass-checker-api.onrender.com';
+  ["OR"].forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>
 </body></html>
