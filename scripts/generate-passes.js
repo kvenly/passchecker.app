@@ -305,7 +305,7 @@ ${widgetScript(region.code, pass.name)}
 // Regions read straight from DOT feeds; their hub and index pills show live
 // status. Other regions are fetched through the paid path, so the static
 // pages leave them as plain links.
-const LIVE_REGIONS = ['WA', 'BC', 'CO', 'CA', 'UT', 'ID', 'AZ', 'NV', 'AK', 'GA', 'AB', 'VT', 'NH', 'ME', 'OR', 'MT'];
+const LIVE_REGIONS = ['WA', 'BC', 'CO', 'CA', 'UT', 'ID', 'AZ', 'NV', 'AK', 'GA', 'AB', 'VT', 'NH', 'ME', 'OR', 'MT', 'WY'];
 
 function pill(code, p) {
   return `<a class="pass-pill" href="/passes/${code.toLowerCase()}/${slugify(p.name)}/" data-r="${code}" data-p="${p.name.replace(/"/g, '&quot;')}"><span class="pass-dot"></span><span class="pname">${p.name}</span><span class="pst"></span></a>`;

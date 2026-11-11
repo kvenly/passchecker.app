@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="hero">
 <div class="eyebrow">// Wyoming</div>
 <h1>Wyoming mountain passes</h1>
-<p>5 passes with live conditions from official state transportation data. Open a pass for its live status.</p>
+<p>5 passes with live conditions from official state transportation data. Status below updates live.</p>
 </div>
 <div class="region-group"><div class="pass-list"><a class="pass-pill" href="/passes/wy/togwotee-pass/" data-r="WY" data-p="Togwotee Pass US 26"><span class="pass-dot"></span><span class="pname">Togwotee Pass US 26</span><span class="pst"></span></a><a class="pass-pill" href="/passes/wy/teton-pass/" data-r="WY" data-p="Teton Pass WY 22"><span class="pass-dot"></span><span class="pname">Teton Pass WY 22</span><span class="pst"></span></a><a class="pass-pill" href="/passes/wy/south-pass/" data-r="WY" data-p="South Pass WY 28"><span class="pass-dot"></span><span class="pname">South Pass WY 28</span><span class="pst"></span></a><a class="pass-pill" href="/passes/wy/powder-river-pass/" data-r="WY" data-p="Powder River Pass US 16"><span class="pass-dot"></span><span class="pname">Powder River Pass US 16</span><span class="pst"></span></a><a class="pass-pill" href="/passes/wy/sherman-summit/" data-r="WY" data-p="Sherman Summit I-80"><span class="pass-dot"></span><span class="pname">Sherman Summit I-80</span><span class="pst"></span></a></div></div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get Pass Checker on the App Store</a>
@@ -124,5 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
 <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
 </div></footer>
 
-
+<script>
+(function () {
+  var API = 'https://pass-checker-api.onrender.com';
+  ["WY"].forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>
 </body></html>
