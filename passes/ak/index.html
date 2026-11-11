@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="hero">
 <div class="eyebrow">// Alaska</div>
 <h1>Alaska mountain passes</h1>
-<p>4 passes with live conditions from official state transportation data. Open a pass for its live status.</p>
+<p>4 passes with live conditions from official state transportation data. Status below updates live.</p>
 </div>
 <div class="region-group"><div class="pass-list"><a class="pass-pill" href="/passes/ak/thompson-pass/" data-r="AK" data-p="Thompson Pass Richardson Hwy"><span class="pass-dot"></span><span class="pname">Thompson Pass Richardson Hwy</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ak/hatcher-pass/" data-r="AK" data-p="Hatcher Pass AK 1"><span class="pass-dot"></span><span class="pname">Hatcher Pass AK 1</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ak/isabel-pass/" data-r="AK" data-p="Isabel Pass Richardson Hwy"><span class="pass-dot"></span><span class="pname">Isabel Pass Richardson Hwy</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ak/white-pass/" data-r="AK" data-p="White Pass South Klondike Hwy"><span class="pass-dot"></span><span class="pname">White Pass South Klondike Hwy</span><span class="pst"></span></a></div></div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get Pass Checker on the App Store</a>
@@ -124,5 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
 <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
 </div></footer>
 
-
+<script>
+(function () {
+  var API = 'https://pass-checker-api.onrender.com';
+  ["AK"].forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>
 </body></html>
