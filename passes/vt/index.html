@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="hero">
 <div class="eyebrow">// Vermont</div>
 <h1>Vermont mountain passes</h1>
-<p>5 passes with live conditions from official state transportation data. Open a pass for its live status.</p>
+<p>5 passes with live conditions from official state transportation data. Status below updates live.</p>
 </div>
 <div class="region-group"><div class="pass-list"><a class="pass-pill" href="/passes/vt/smugglers-notch/" data-r="VT" data-p="Smugglers Notch VT 108"><span class="pass-dot"></span><span class="pname">Smugglers Notch VT 108</span><span class="pst"></span></a><a class="pass-pill" href="/passes/vt/app-gap/" data-r="VT" data-p="App Gap VT 17"><span class="pass-dot"></span><span class="pname">App Gap VT 17</span><span class="pst"></span></a><a class="pass-pill" href="/passes/vt/brandon-gap/" data-r="VT" data-p="Brandon Gap VT 73"><span class="pass-dot"></span><span class="pname">Brandon Gap VT 73</span><span class="pst"></span></a><a class="pass-pill" href="/passes/vt/middlebury-gap/" data-r="VT" data-p="Middlebury Gap VT 125"><span class="pass-dot"></span><span class="pname">Middlebury Gap VT 125</span><span class="pst"></span></a><a class="pass-pill" href="/passes/vt/hazens-notch/" data-r="VT" data-p="Hazens Notch VT 58"><span class="pass-dot"></span><span class="pname">Hazens Notch VT 58</span><span class="pst"></span></a></div></div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get Pass Checker on the App Store</a>
@@ -124,5 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
 <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
 </div></footer>
 
-
+<script>
+(function () {
+  var API = 'https://pass-checker-api.onrender.com';
+  ["VT"].forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>
 </body></html>

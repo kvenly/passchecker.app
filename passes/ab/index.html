@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="hero">
 <div class="eyebrow">// Alberta</div>
 <h1>Alberta mountain passes</h1>
-<p>6 passes with live conditions from official provincial transportation data. Open a pass for its live status.</p>
+<p>6 passes with live conditions from official provincial transportation data. Status below updates live.</p>
 </div>
 <div class="region-group"><div class="pass-list"><a class="pass-pill" href="/passes/ab/highwood-pass/" data-r="AB" data-p="Highwood Pass Hwy 40"><span class="pass-dot"></span><span class="pname">Highwood Pass Hwy 40</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ab/bow-summit/" data-r="AB" data-p="Bow Summit Hwy 93"><span class="pass-dot"></span><span class="pname">Bow Summit Hwy 93</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ab/sunwapta-pass/" data-r="AB" data-p="Sunwapta Pass Hwy 93"><span class="pass-dot"></span><span class="pname">Sunwapta Pass Hwy 93</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ab/vermilion-pass/" data-r="AB" data-p="Vermilion Pass Hwy 93"><span class="pass-dot"></span><span class="pname">Vermilion Pass Hwy 93</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ab/kicking-horse-pass/" data-r="AB" data-p="Kicking Horse Pass Hwy 1"><span class="pass-dot"></span><span class="pname">Kicking Horse Pass Hwy 1</span><span class="pst"></span></a><a class="pass-pill" href="/passes/ab/crowsnest-pass/" data-r="AB" data-p="Crowsnest Pass Hwy 3"><span class="pass-dot"></span><span class="pname">Crowsnest Pass Hwy 3</span><span class="pst"></span></a></div></div>
 <a class="cta" href="https://apps.apple.com/us/app/pass-checker/id6764229547">Get Pass Checker on the App Store</a>
@@ -124,5 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
 <div>&copy; 2026 Mountain Media Digital LLC &nbsp;&middot;&nbsp; Not affiliated with any government agency.</div>
 </div></footer>
 
-
+<script>
+(function () {
+  var API = 'https://pass-checker-api.onrender.com';
+  ["AB"].forEach(function (code) {
+    fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.data) return;
+      var byName = {};
+      d.data.forEach(function (p) { byName[p.name] = p.status; });
+      document.querySelectorAll('.pass-pill[data-r="' + code + '"]').forEach(function (el) {
+        var st = byName[el.getAttribute('data-p')];
+        if (!st) return;
+        el.querySelector('.pass-dot').className = 'pass-dot ' + st;
+        var label = el.querySelector('.pst');
+        label.className = 'pst ' + st;
+        label.textContent = st === 'restricted' ? 'open*' : st;
+      });
+    }).catch(function () {});
+  });
+})();
+</script>
 </body></html>

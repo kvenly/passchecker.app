@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 (function () {
   var API = 'https://pass-checker-api.onrender.com';
-  ["WA","BC","CO","CA","UT","ID","AZ","NV","AK"].forEach(function (code) {
+  ["WA","BC","CO","CA","UT","ID","AZ","NV","AK","GA","AB","VT","NH","ME"].forEach(function (code) {
     fetch(API + '/passes/' + code).then(function (r) { return r.json(); }).then(function (d) {
       if (!d || !d.data) return;
       var byName = {};
